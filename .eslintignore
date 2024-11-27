@@ -1,0 +1,10 @@
+.next/
+.pipeline/
+.vscode/
+.snapshots/
+node_modules/
+src
+coverage/
+build/
+dist/
+*.min.js
