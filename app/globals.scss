@@ -1,3 +1,5 @@
+@import '/styles/variables';
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -5,9 +7,13 @@
 
 
 body {
-  color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-color: rgba(0,0,0,0);
+  margin: 0px auto;
+  overflow: hidden;
+  width: 1920px;
+  max-height: 1080px;
 }
