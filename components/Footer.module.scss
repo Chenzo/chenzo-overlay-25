@@ -1,0 +1,17 @@
+@import '/styles/_variables';
+
+
+
+.chenzo_footer{
+    position: absolute;
+    bottom: 0px;
+    width: 100vw;
+    height: 40px;
+    z-index: 7;
+
+    background-image: url('/images/goldpaper.png');
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+
+}
