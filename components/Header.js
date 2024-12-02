@@ -1,26 +1,21 @@
 /* eslint-disable jsx-a11y/alt-text */
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import styles from './Header.module.scss';
 
-export default function Header({}) {
+export default function Header({ alignment }) {
   const skull = useRef();
 
-  const eventSource = new EventSource('http://localhost:3000/overlay-events');
+  useEffect(() => {
+    console.log(`adjustAlignment: ${alignment}`);
 
-  eventSource.onmessage = (event) => {
-    console.log(event.data);
-    /* const data = JSON.parse(event.data);
-    const messagesDiv = document.getElementById('messages');
-    const newMessage = document.createElement('div');
-    newMessage.textContent = `New message: ${data.message}`;
-    messagesDiv.appendChild(newMessage); */
-  };
+    let val = parseInt(alignment) - 50;
+    val = val * 9; //this is to go from -450% to 450% which is the width of the bar.;
+    console.log(`MOVE THIS MUCH ${val}`);
 
-  eventSource.onerror = () => {
-    console.error('Connection lost. Reconnecting...');
-  };
+    skull.current.style.transform = `translateX(${val}%)`;
+  }, [alignment]);
 
   return (
     <header className={styles.chenzHeader}>
