@@ -6,11 +6,13 @@ import Header from './Header';
 import AudioObject from './AudioObject';
 import Footer from './Footer';
 import Sunks from './Sunks';
+import DiscordImage from './DiscordImage';
 
 export default function Overlay({}) {
   const [alignment, setAlignment] = useState(50);
   const [currentAudio, setCurrentAudio] = useState('');
   const [sunkShipArray, setSunkShipArray] = useState([]);
+  const [pushedImage, setPushedImage] = useState(null);
 
   const listenToServer = () => {
     const eventSource = new EventSource('http://localhost:3000/overlay-events');
@@ -42,6 +44,10 @@ export default function Overlay({}) {
       ) {
         console.log('burning blade');
         setSunkShipArray((sunkShipArray) => [...sunkShipArray, 'bblade']);
+      } else if (data?.theEvent == 'imagePush') {
+        console.log('imagePush!!!');
+        console.log(data);
+        setPushedImage(data.theValue);
       }
     };
 
@@ -59,6 +65,7 @@ export default function Overlay({}) {
       <Header alignment={alignment} />
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <Sunks sunkShipArray={sunkShipArray} />
+      <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
       <Footer />
     </section>
   );
