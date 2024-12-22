@@ -14,6 +14,10 @@ export default function Overlay({}) {
   const [sunkShipArray, setSunkShipArray] = useState([]);
   const [pushedImage, setPushedImage] = useState(null);
 
+  const [status, setStatus] = useState('Checking...');
+  // eslint-disable-next-line no-unused-vars
+  const [isLive, setIsLive] = useState(false);
+
   const listenToServer = () => {
     const eventSource = new EventSource('http://localhost:3000/overlay-events');
 
@@ -56,8 +60,30 @@ export default function Overlay({}) {
     };
   };
 
+  const checkStreamStatus = async () => {
+    console.log('Checking Twitch status...');
+
+    try {
+      //const response = await fetch('/api/checkTwitch?username=your-twitch-username');
+      const response = await fetch('/api/checkTwitch');
+      const data = await response.json();
+
+      if (data.isLive) {
+        setStatus(`🎥 ${data.streamData.user_name} is LIVE!`);
+        setIsLive(true);
+      } else {
+        setStatus('🔴 Currently offline.');
+        setIsLive(false);
+      }
+    } catch (error) {
+      console.error('Error fetching Twitch status:', error);
+      setStatus('❌ Error checking status.');
+    }
+  };
+
   useEffect(() => {
     listenToServer();
+    checkStreamStatus();
   }, []);
 
   return (
@@ -67,6 +93,10 @@ export default function Overlay({}) {
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
       <Footer />
+      <div>
+        <h1>Twitch Status</h1>
+        <p>{status}</p>
+      </div>
     </section>
   );
 }
