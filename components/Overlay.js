@@ -15,7 +15,7 @@ export default function Overlay({}) {
   const [pushedImage, setPushedImage] = useState(null);
 
   const [status, setStatus] = useState('Checking...');
-  // eslint-disable-next-line no-unused-vars
+
   const [isLive, setIsLive] = useState(false);
 
   const listenToServer = () => {
@@ -81,9 +81,23 @@ export default function Overlay({}) {
     }
   };
 
+  const timerCheckStreamStatus = () => {
+    if (!isLive) {
+      console.log('Not Live: Checking Twitch status...');
+      checkStreamStatus();
+      setTimeout(() => {
+        timerCheckStreamStatus();
+      }, 60000);
+    }
+  };
+
   useEffect(() => {
     listenToServer();
-    checkStreamStatus();
+    timerCheckStreamStatus();
+    /* checkStreamStatus();
+    setTimeout(() => {
+      timerCheckStreamStatus();
+    }, 60000); */
   }, []);
 
   return (
