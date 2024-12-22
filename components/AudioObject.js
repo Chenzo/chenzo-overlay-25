@@ -61,8 +61,6 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
   };
 
   useEffect(() => {
-    console.log('audio audio');
-
     if (!isPlaying && currentAudio != '') {
       findAndPlay(currentAudio);
     }

@@ -22,10 +22,10 @@ export default function Overlay({}) {
     const eventSource = new EventSource('http://localhost:3000/overlay-events');
 
     eventSource.onmessage = (event) => {
-      console.log(event.data);
+      //console.log(event.data);
       const data = JSON.parse(event.data);
 
-      console.log(data?.theEvent);
+      //console.log(data?.theEvent);
 
       if (data?.theEvent == 'setAlignment') {
         setAlignment(parseInt(data.theTarget));
@@ -74,6 +74,9 @@ export default function Overlay({}) {
       } else {
         setStatus('🔴 Currently offline.');
         setIsLive(false);
+        setTimeout(() => {
+          checkStreamStatus();
+        }, 60000);
       }
     } catch (error) {
       console.error('Error fetching Twitch status:', error);
@@ -81,23 +84,10 @@ export default function Overlay({}) {
     }
   };
 
-  const timerCheckStreamStatus = () => {
-    if (!isLive) {
-      console.log('Not Live: Checking Twitch status...');
-      checkStreamStatus();
-      setTimeout(() => {
-        timerCheckStreamStatus();
-      }, 60000);
-    }
-  };
-
   useEffect(() => {
     listenToServer();
-    timerCheckStreamStatus();
-    /* checkStreamStatus();
-    setTimeout(() => {
-      timerCheckStreamStatus();
-    }, 60000); */
+    checkStreamStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

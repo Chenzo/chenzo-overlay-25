@@ -8,11 +8,8 @@ export default function Header({ alignment }) {
   const skull = useRef();
 
   useEffect(() => {
-    console.log(`adjustAlignment: ${alignment}`);
-
     let val = parseInt(alignment) - 50;
     val = val * 9; //this is to go from -450% to 450% which is the width of the bar.;
-    console.log(`MOVE THIS MUCH ${val}`);
 
     skull.current.style.transform = `translateX(${val}%)`;
   }, [alignment]);
