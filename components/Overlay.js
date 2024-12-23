@@ -22,10 +22,7 @@ export default function Overlay({}) {
     const eventSource = new EventSource('http://localhost:3000/overlay-events');
 
     eventSource.onmessage = (event) => {
-      //console.log(event.data);
       const data = JSON.parse(event.data);
-
-      //console.log(data?.theEvent);
 
       if (data?.theEvent == 'setAlignment') {
         setAlignment(parseInt(data.theTarget));
@@ -86,7 +83,7 @@ export default function Overlay({}) {
 
   useEffect(() => {
     listenToServer();
-    //checkStreamStatus();
+    checkStreamStatus();
   }, []);
 
   return (
