@@ -3,5 +3,23 @@
 @import '/styles/_variables';
 
 .overlay {
-    //color: red;
+    .twitchStatus {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        z-index: 100;
+        img {
+            width: 40px;
+            animation: blink 3s infinite;
+        }
+    }
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
 }

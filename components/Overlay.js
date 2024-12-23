@@ -14,7 +14,7 @@ export default function Overlay({}) {
   const [sunkShipArray, setSunkShipArray] = useState([]);
   const [pushedImage, setPushedImage] = useState(null);
 
-  const [status, setStatus] = useState('Checking...');
+  //const [status, setStatus] = useState('Checking...');
 
   const [isLive, setIsLive] = useState(false);
 
@@ -69,10 +69,10 @@ export default function Overlay({}) {
       const data = await response.json();
 
       if (data.isLive) {
-        setStatus(`🎥 ${data.streamData.user_name} is LIVE!`);
+        //setStatus(`🎥 ${data.streamData.user_name} is LIVE!`);
         setIsLive(true);
       } else {
-        setStatus('🔴 Currently offline.');
+        //setStatus('🔴 Currently offline.');
         setIsLive(false);
         setTimeout(() => {
           checkStreamStatus();
@@ -86,8 +86,7 @@ export default function Overlay({}) {
 
   useEffect(() => {
     listenToServer();
-    checkStreamStatus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    //checkStreamStatus();
   }, []);
 
   return (
@@ -97,10 +96,11 @@ export default function Overlay({}) {
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
       <Footer />
-      <div>
-        <h1>Twitch Status</h1>
-        <p>{status}</p>
-      </div>
+      {!isLive && (
+        <div className={styles.twitchStatus}>
+          <img src='/images/disconnect-plug-icon.png' alt='' />
+        </div>
+      )}
     </section>
   );
 }

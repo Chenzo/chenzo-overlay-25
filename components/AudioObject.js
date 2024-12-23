@@ -64,11 +64,12 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
     if (!isPlaying && currentAudio != '') {
       findAndPlay(currentAudio);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentAudio]);
 
   return (
     <aside className={`${styles.trumpet} ${currentAudio != '' ? styles.active : ''}`}>
-      <img src='images/Speaking_Trumpet.webp' />
+      <img src='images/Speaking_Trumpet.webp' alt='' />
     </aside>
   );
 }
