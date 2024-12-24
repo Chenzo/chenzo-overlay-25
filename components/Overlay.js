@@ -23,32 +23,35 @@ export default function Overlay({}) {
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      const uid = data?.uid;
 
-      if (data?.theEvent == 'setAlignment') {
-        setAlignment(parseInt(data.theTarget));
-      } else if (data?.theEvent == 'playaudio') {
-        console.log(`play audio: ${data.theTarget}`);
-        setCurrentAudio(data.theTarget);
-      } else if (
-        data?.theEvent == 'shipsunk' ||
-        data?.theEvent == 'shipresunk' ||
-        data?.theEvent == 'shipsunk-flag' ||
-        data?.theEvent == 'shipresunk-flag' ||
-        data?.theEvent == 'factionshipsunk' ||
-        data?.theEvent == 'factionshipsunk-flag'
-      ) {
-        let daShip = data?.theTarget.split('-')[0];
-        setSunkShipArray((sunkShipArray) => [...sunkShipArray, daShip]);
-      } else if (
-        (data?.theEvent == 'didEvent' && data?.theTarget == 'bbsunk') ||
-        (data?.theEvent == 'didEvent' && data?.theTarget == 'bbpsunk')
-      ) {
-        console.log('burning blade');
-        setSunkShipArray((sunkShipArray) => [...sunkShipArray, 'bblade']);
-      } else if (data?.theEvent == 'imagePush') {
-        console.log('imagePush!!!');
-        console.log(data);
-        setPushedImage(data.theValue);
+      if (uid == 'teaxc64in') {
+        if (data?.theEvent == 'setAlignment') {
+          setAlignment(parseInt(data.theTarget));
+        } else if (data?.theEvent == 'playaudio') {
+          console.log(`play audio: ${data.theTarget}`);
+          setCurrentAudio(data.theTarget);
+        } else if (
+          data?.theEvent == 'shipsunk' ||
+          data?.theEvent == 'shipresunk' ||
+          data?.theEvent == 'shipsunk-flag' ||
+          data?.theEvent == 'shipresunk-flag' ||
+          data?.theEvent == 'factionshipsunk' ||
+          data?.theEvent == 'factionshipsunk-flag'
+        ) {
+          let daShip = data?.theTarget.split('-')[0];
+          setSunkShipArray((sunkShipArray) => [...sunkShipArray, daShip]);
+        } else if (
+          (data?.theEvent == 'didEvent' && data?.theTarget == 'bbsunk') ||
+          (data?.theEvent == 'didEvent' && data?.theTarget == 'bbpsunk')
+        ) {
+          console.log('burning blade');
+          setSunkShipArray((sunkShipArray) => [...sunkShipArray, 'bblade']);
+        } else if (data?.theEvent == 'imagePush') {
+          console.log('imagePush!!!');
+          console.log(data);
+          setPushedImage(data.theValue);
+        }
       }
     };
 

@@ -1,21 +1,30 @@
 /* eslint-disable jsx-a11y/alt-text */
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './Header.module.scss';
 
 export default function Header({ alignment }) {
   const skull = useRef();
+  const [alignClass, setAlignClass] = useState(null);
 
   useEffect(() => {
     let val = parseInt(alignment) - 50;
     val = val * 9; //this is to go from -450% to 450% which is the width of the bar.;
 
     skull.current.style.transform = `translateX(${val}%)`;
+
+    if (val < -200) {
+      setAlignClass(styles.evilness);
+    } else if (val > 200) {
+      setAlignClass(styles.goodness);
+    } else {
+      setAlignClass(null);
+    }
   }, [alignment]);
 
   return (
-    <header className={styles.chenzHeader}>
+    <header className={`${styles.chenzHeader}  ${alignClass}`}>
       <div className={`${styles.innerBar} ${styles.top_clip} windlass`}>
         <span className='dropshadow_effect_11x tshadow'>
           The Gentlemen of Fortune and the Adventures of The Holy Bartender
