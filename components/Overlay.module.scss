@@ -13,6 +13,12 @@
             animation: blink 3s infinite;
         }
     }
+
+    .testButton {
+        position: absolute;
+        z-index: 10000;
+        background-color: aqua;
+    }
 }
 
 @keyframes blink {

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -71,6 +72,7 @@ export default function Overlay({}) {
       if (data.isLive) {
         //setStatus(`🎥 ${data.streamData.user_name} is LIVE!`);
         setIsLive(true);
+        streamHasStarted(data.streamData);
       } else {
         //setStatus('🔴 Currently offline.');
         setIsLive(false);
@@ -84,6 +86,88 @@ export default function Overlay({}) {
     }
   };
 
+  /* const fakePostToAnounce = () => {
+    const streamData = {
+      id: '52780894349',
+      user_id: '58652316',
+      user_login: 'chenzorama',
+      user_name: 'Chenzorama',
+      game_id: '490377',
+      game_name: 'Sea of Thieves',
+      type: 'live',
+      title: 'TESTING: Testing new stream overlay and stream start detection.',
+      viewer_count: 0,
+      started_at: '2024-12-26T18:06:57Z',
+      language: 'en',
+      thumbnail_url: 'https://static-cdn.jtvnw.net/previews-ttv/live_user_chenzorama-{width}x{height}.jpg',
+      tag_ids: [],
+      tags: ['seaofthieves', 'jabroni', 'SoTOrb', 'English'],
+      is_mature: false,
+    };
+    postToAnounce(streamData.title, streamData.game_name, streamData.thumbnail_url);
+  }; */
+
+  const postToAnounce = async (title, game_name, thumbnail_url) => {
+    console.log('Posting to Discord...');
+
+    const width = 1920;
+    const height = 1080;
+
+    const cleaned_thumbnail_url = thumbnail_url.replace('{width}', width).replace('{height}', height);
+
+    const data = {
+      title: title,
+      game_name: game_name,
+      thumbnail_url: cleaned_thumbnail_url,
+    };
+
+    console.log(data);
+    const response = await fetch('/api/postToDiscord', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      console.log('Successfully posted:', result.data);
+    } else {
+      console.error('Error:', result.error);
+    }
+  };
+
+  const streamHasStarted = (streamData) => {
+    console.log('Stream has started:');
+    console.log(streamData);
+    /*
+      {
+      "id": "52780894349",
+      "user_id": "58652316",
+      "user_login": "chenzorama",
+      "user_name": "Chenzorama",
+      "game_id": "490377",
+      "game_name": "Sea of Thieves",
+      "type": "live",
+      "title": "TESTING: Testing new stream overlay and stream start detection.",
+      "viewer_count": 0,
+      "started_at": "2024-12-26T18:06:57Z",
+      "language": "en",
+      "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_chenzorama-{width}x{height}.jpg",
+      "tag_ids": [],
+      "tags": [
+          "seaofthieves",
+          "jabroni",
+          "SoTOrb",
+          "English"
+      ],
+      "is_mature": false
+  }*/
+    postToAnounce(streamData.title, streamData.game_name, streamData.thumbnail_url);
+  };
+
   useEffect(() => {
     listenToServer();
     checkStreamStatus();
@@ -92,6 +176,9 @@ export default function Overlay({}) {
   return (
     <section className={styles.overlay}>
       <Header alignment={alignment} />
+      {/* <div className={styles.testButton}>
+        <div onClick={fakePostToAnounce}>Post to Discord</div>
+      </div> */}
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />

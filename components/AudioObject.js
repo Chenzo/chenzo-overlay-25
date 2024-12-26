@@ -50,6 +50,9 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
     } else if (audioName == 'shutter') {
       theAudio.src = 'https://chenzorama.com/overlay/audio/shutter_sound.mp3';
       theAudio.volume = 1;
+    } else if (audioName == 'rocklobster') {
+      theAudio.src = 'https://chenzorama.com/overlay/audio/rocklobster.mp3';
+      theAudio.volume = 1;
     }
 
     theAudio.addEventListener('ended', function () {
