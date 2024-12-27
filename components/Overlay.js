@@ -9,6 +9,7 @@ import Footer from './Footer';
 import Sunks from './Sunks';
 import DiscordImage from './DiscordImage';
 import LoginButton from './LoginButton';
+import LogOutButton from './LogOutButton';
 
 export default function Overlay({}) {
   const [alignment, setAlignment] = useState(50);
@@ -202,6 +203,11 @@ export default function Overlay({}) {
       {!isLive && (
         <div className={styles.twitchStatus}>
           <img src='/images/disconnect-plug-icon.png' alt='' />
+        </div>
+      )}
+      {loggedIn && (
+        <div className={styles.belowSpace}>
+          <LogOutButton setLoggedIn={setLoggedIn} />
         </div>
       )}
     </section>

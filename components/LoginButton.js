@@ -6,7 +6,7 @@ export default function LoginButton() {
   const handleLogin = () => {
     const clientId = process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID;
     const redirectUri = process.env.NEXT_PUBLIC_TWITCH_REDIRECT_URI;
-    const scope = 'moderator:read:followers';
+    const scope = 'moderator:read:followers channel:read:subscriptions';
 
     const twitchAuthUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
       redirectUri
@@ -15,5 +15,5 @@ export default function LoginButton() {
     window.location.href = twitchAuthUrl;
   };
 
-  return <div onClick={handleLogin}>Login To Twitch Button!</div>;
+  return <div onClick={handleLogin}>Login</div>;
 }

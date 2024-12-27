@@ -6,10 +6,34 @@ import styles from './Footer.module.scss';
 
 export default function Footer({ loggedIn }) {
   const [followers, setFollowers] = useState([]);
+  const [subs, setSubs] = useState([]);
   const [isChatting, setIsChatting] = useState(false);
 
   useEffect(() => {
     const accessToken = localStorage.getItem('twitchAccessToken');
+
+    const fetchSubscribers = async () => {
+      try {
+        const response = await fetch('https://api.twitch.tv/helix/subscriptions?broadcaster_id=58652316&first=10', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Client-Id': process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch subscribers');
+        }
+
+        const data = await response.json();
+        console.log('Subscribers:', data);
+        setSubs(data.data || []);
+        return data.data;
+      } catch (error) {
+        console.error(error);
+        alert('Error fetching subscribers');
+      }
+    };
 
     const fetchFollowers = async () => {
       try {
