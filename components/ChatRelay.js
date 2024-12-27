@@ -3,7 +3,7 @@ import tmi from 'tmi.js';
 import { useEffect, useState } from 'react';
 import styles from './ChatRelay.module.scss';
 
-export default function ChatRelay() {
+export default function ChatRelay({ setIsChatting }) {
   const [latestChat, setLatestChat] = useState(null);
   const [messageId, setMessageId] = useState(0); // Track unique message IDs
 
@@ -61,9 +61,15 @@ export default function ChatRelay() {
       );
 
       setLatestChat(newC);
+      setIsChatting(true);
+      const chatCount = setTimeout(() => {
+        setIsChatting(false);
+      }, 10000);
       setMessageId((prev) => prev + 1); // Increment message ID for each new message
 
       if (self) return;
+
+      return () => clearTimeout(chatCount);
     });
 
     return () => client.disconnect(); // Cleanup on component unmount
