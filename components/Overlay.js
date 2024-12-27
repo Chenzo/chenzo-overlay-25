@@ -172,10 +172,9 @@ export default function Overlay({}) {
 
   useEffect(() => {
     listenToServer();
-    //checkStreamStatus();
+    checkStreamStatus();
 
     const accessToken = localStorage.getItem('twitchAccessToken');
-
     console.log('accessToken from storage', accessToken);
 
     if (accessToken) {
