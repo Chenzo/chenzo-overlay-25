@@ -13,7 +13,7 @@
     background-size: cover;
 
 
-    .followers {
+    .followers, .subs {
         padding: 0;
         margin: 0;
         position: absolute;
@@ -43,6 +43,12 @@
             &:first-child {
                 color: $blue_3;
             }
+        }
+    }
+
+    .subs {
+        li:first-child {
+            color: $gold_2;
         }
     }
 }
