@@ -1,19 +1,22 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import styles from './Overlay.module.scss';
 import Header from './Header';
 import AudioObject from './AudioObject';
 import Footer from './Footer';
 import Sunks from './Sunks';
 import DiscordImage from './DiscordImage';
+import LoginButton from './LoginButton';
+import LogOutButton from './LogOutButton';
 
 export default function Overlay({}) {
   const [alignment, setAlignment] = useState(50);
   const [currentAudio, setCurrentAudio] = useState('');
   const [sunkShipArray, setSunkShipArray] = useState([]);
   const [pushedImage, setPushedImage] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   //const [status, setStatus] = useState('Checking...');
 
@@ -121,7 +124,6 @@ export default function Overlay({}) {
       thumbnail_url: cleaned_thumbnail_url,
     };
 
-    console.log(data);
     const response = await fetch('/api/postToDiscord', {
       method: 'POST',
       headers: {
@@ -171,6 +173,15 @@ export default function Overlay({}) {
   useEffect(() => {
     listenToServer();
     checkStreamStatus();
+
+    const accessToken = localStorage.getItem('twitchAccessToken');
+    console.log('accessToken from storage', accessToken);
+
+    if (accessToken) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
   }, []);
 
   return (
@@ -179,13 +190,23 @@ export default function Overlay({}) {
       {/* <div className={styles.testButton}>
         <div onClick={fakePostToAnounce}>Post to Discord</div>
       </div> */}
+      {!loggedIn && (
+        <div className={styles.startButton}>
+          <LoginButton />
+        </div>
+      )}
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
-      <Footer />
+      <Footer loggedIn={loggedIn} />
       {!isLive && (
         <div className={styles.twitchStatus}>
           <img src='/images/disconnect-plug-icon.png' alt='' />
+        </div>
+      )}
+      {loggedIn && (
+        <div className={styles.belowSpace}>
+          <LogOutButton setLoggedIn={setLoggedIn} />
         </div>
       )}
     </section>

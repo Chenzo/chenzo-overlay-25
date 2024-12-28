@@ -1,6 +1,5 @@
 
-
-@import '/styles/_variables';
+@use '/styles/_variables' as *;
 
 .overlay {
     .twitchStatus {
@@ -18,6 +17,48 @@
         position: absolute;
         z-index: 10000;
         background-color: aqua;
+    }
+
+    .startButton {
+        /* width: 100vw;
+        height: 100vh; */
+        position: absolute;
+        z-index: 10000;
+        /* display: flex;
+        justify-content: center;
+        align-items: center; */
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        div {
+            width: 70px;
+            height: 70px;
+            background-color: $blue_2;
+            color: $blue_2;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+            text-align: center;
+            border-radius: 16px;
+        }
+    }
+
+    .belowSpace {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        z-index: 808080;
+
+        button {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            border: 0;
+            opacity: 0;
+        }
     }
 }
 

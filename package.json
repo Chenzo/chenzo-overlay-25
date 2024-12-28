@@ -16,10 +16,13 @@
     "tmi.js": "^1.8.5"
   },
   "devDependencies": {
+    "@types/node": "22.10.2",
+    "@types/react": "19.0.2",
     "eslint": "9.15.0",
     "eslint-config-next": "^15.0.3",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "4.0.0",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "sass-loader": "^16.0.4"
   }
 }
