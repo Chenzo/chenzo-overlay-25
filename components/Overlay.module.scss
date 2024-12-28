@@ -6,7 +6,8 @@
         position: absolute;
         bottom: 10px;
         right: 10px;
-        z-index: 100;
+        z-index: 1000;
+        pointer-events: none;
         img {
             width: 40px;
             animation: blink 3s infinite;
@@ -23,7 +24,7 @@
         /* width: 100vw;
         height: 100vh; */
         position: absolute;
-        z-index: 10000;
+        z-index: 100;
         /* display: flex;
         justify-content: center;
         align-items: center; */

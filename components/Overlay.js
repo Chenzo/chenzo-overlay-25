@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -12,6 +13,7 @@ import LoginButton from './LoginButton';
 import LogOutButton from './LogOutButton';
 
 export default function Overlay({}) {
+  const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
   const [alignment, setAlignment] = useState(50);
   const [currentAudio, setCurrentAudio] = useState('');
   const [sunkShipArray, setSunkShipArray] = useState([]);
@@ -23,11 +25,16 @@ export default function Overlay({}) {
   const [isLive, setIsLive] = useState(false);
 
   const listenToServer = () => {
-    const eventSource = new EventSource('http://localhost:3000/overlay-events');
+    console.log('Listening to server...');
+    console.log(`${murrayURL}/overlay-events`);
+    const eventSource = new EventSource(`${murrayURL}/overlay-events`);
 
     eventSource.onmessage = (event) => {
+      console.log('event received');
       const data = JSON.parse(event.data);
       const uid = data?.uid;
+
+      console.log(data);
 
       if (uid == 'teaxc64in') {
         if (data?.theEvent == 'setAlignment') {
