@@ -7,5 +7,5 @@ export default function LogOutButton({ setLoggedIn }) {
     window.location.href = '/';
   };
 
-  return <button onClick={handleLogout}>Log Out</button>;
+  return <button onClick={handleLogout}>LOG OUT OF TWITCH</button>;
 }

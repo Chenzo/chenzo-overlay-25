@@ -14,38 +14,7 @@
         }
     }
 
-    .testButton {
-        position: absolute;
-        z-index: 10000;
-        background-color: aqua;
-    }
 
-    .startButton {
-        /* width: 100vw;
-        height: 100vh; */
-        position: absolute;
-        z-index: 100;
-        /* display: flex;
-        justify-content: center;
-        align-items: center; */
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        div {
-            width: 70px;
-            height: 70px;
-            background-color: $blue_2;
-            color: $blue_2;
-            font-size: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            box-sizing: border-box;
-            text-align: center;
-            border-radius: 16px;
-        }
-    }
 
     .belowSpace {
         position: absolute;
@@ -59,6 +28,55 @@
             background-color: red;
             border: 0;
             opacity: 0;
+        }
+    }
+
+    .menuWindow {
+        position: absolute;
+        top:0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .menuContent {
+            background-color: $blue_3;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            text-align: center;
+
+            button {
+                padding: 10px;
+                outline: none;
+                border: none;
+                font-size: 20px;
+                margin: 5px;
+
+                &.closeMenu {
+                    position: absolute;
+                    width: 30px;
+                    height: 30px;
+                    right: -15px;
+                    top: -15px;
+                    background-color: $gold_orange;
+                    border-radius: 10px;
+                }
+
+                &.testButton {
+                    background-color: aqua;
+                }
+            }
+
+            .inputSpace {
+                margin-top: 15px;
+                textarea {
+                    width: 800px;
+                    height: 200px;
+                    font-size: 30px;
+                }
+            }
         }
     }
 }

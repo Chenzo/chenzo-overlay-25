@@ -15,5 +15,5 @@ export default function LoginButton() {
     window.location.href = twitchAuthUrl;
   };
 
-  return <div onClick={handleLogin}>Login</div>;
+  return <button onClick={handleLogin}>LOG INTO TWITCH</button>;
 }
