@@ -19,6 +19,13 @@ export default function Overlay({}) {
   const [sunkShipArray, setSunkShipArray] = useState([]);
   const [pushedImage, setPushedImage] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(true);
+  const [streamDescription, setStreamDescription] = useState(
+    `The crew of the Holy Bartender has set sail again on The Sea of Thieves! There's a stream! Come watch along https://www.twitch.tv/chenzorama`
+  );
+
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  console.log('isDevelopment:', isDevelopment);
 
   //const [status, setStatus] = useState('Checking...');
 
@@ -96,7 +103,7 @@ export default function Overlay({}) {
     }
   };
 
-  /* const fakePostToAnounce = () => {
+  const fakePostToAnounce = () => {
     const streamData = {
       id: '52780894349',
       user_id: '58652316',
@@ -115,7 +122,7 @@ export default function Overlay({}) {
       is_mature: false,
     };
     postToAnounce(streamData.title, streamData.game_name, streamData.thumbnail_url);
-  }; */
+  };
 
   const postToAnounce = async (title, game_name, thumbnail_url) => {
     console.log('Posting to Discord...');
@@ -123,12 +130,15 @@ export default function Overlay({}) {
     const width = 1920;
     const height = 1080;
 
+    //let streamDescription = `The crew of the Holy Bartender has set sail again in ${game_name}! There's a stream! Come watch along https://www.twitch.tv/chenzorama`;
+
     const cleaned_thumbnail_url = thumbnail_url.replace('{width}', width).replace('{height}', height);
 
     const data = {
       title: title,
       game_name: game_name,
       thumbnail_url: cleaned_thumbnail_url,
+      streamDescription: streamDescription,
     };
 
     const response = await fetch('/api/postToDiscord', {
@@ -177,9 +187,21 @@ export default function Overlay({}) {
     postToAnounce(streamData.title, streamData.game_name, streamData.thumbnail_url);
   };
 
+  const openMenu = () => {
+    console.log('Opening menu...');
+    setMenuOpen(true);
+  };
+
+  const closeMenu = () => {
+    console.log('Closing menu...');
+    setMenuOpen(false);
+  };
+
   useEffect(() => {
-    listenToServer();
-    checkStreamStatus();
+    if (!isDevelopment) {
+      listenToServer();
+      checkStreamStatus();
+    }
 
     const accessToken = localStorage.getItem('twitchAccessToken');
     console.log('accessToken from storage', accessToken);
@@ -194,14 +216,7 @@ export default function Overlay({}) {
   return (
     <section className={styles.overlay}>
       <Header alignment={alignment} />
-      {/* <div className={styles.testButton}>
-        <div onClick={fakePostToAnounce}>Post to Discord</div>
-      </div> */}
-      {!loggedIn && (
-        <div className={styles.startButton}>
-          <LoginButton />
-        </div>
-      )}
+
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
@@ -211,11 +226,32 @@ export default function Overlay({}) {
           <img src='/images/disconnect-plug-icon.png' alt='' />
         </div>
       )}
-      {loggedIn && (
-        <div className={styles.belowSpace}>
-          <LogOutButton setLoggedIn={setLoggedIn} />
+
+      {menuOpen && (
+        <div className={styles.menuWindow}>
+          <div className={styles.menuContent}>
+            <button className={styles.closeMenu} onClick={closeMenu} />
+            {loggedIn && <LogOutButton setLoggedIn={setLoggedIn} />}
+            {!loggedIn && <LoginButton />}
+            <hr />
+            <div className={styles.testButton}>
+              <button onClick={fakePostToAnounce}>TEST POST TO DISCORD</button>
+            </div>
+
+            <div className={styles.inputSpace}>
+              <textarea
+                placeholder='Enter a message to post to Discord...'
+                value={streamDescription}
+                maxLength='175'
+                onChange={(e) => setStreamDescription(e.target.value)}
+              />
+            </div>
+          </div>
         </div>
       )}
+      <div className={styles.belowSpace}>
+        <button onClick={openMenu}>Open Menu</button>
+      </div>
     </section>
   );
 }

@@ -11,6 +11,7 @@ export default function Footer({ loggedIn }) {
   const [isChatting, setIsChatting] = useState(false);
   const broadcaster_id = process.env.NEXT_PUBLIC_TWITCH_USERID;
   const [showingSubs, setShowingSubs] = useState(false);
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
   useEffect(() => {
     const accessToken = localStorage.getItem('twitchAccessToken');
@@ -64,17 +65,17 @@ export default function Footer({ loggedIn }) {
       }
     };
 
-    if (loggedIn && accessToken) {
-      //console.log('fetchFollowers');
+    if (loggedIn && accessToken && !isDevelopment) {
       fetchFollowers();
       fetchSubscribers();
     }
 
     const interval = setInterval(() => {
-      //console.log('toggle showingSubs refetch followers and subs');
-      setShowingSubs((prevShowingSubs) => !prevShowingSubs);
-      fetchFollowers();
-      fetchSubscribers();
+      if (!isDevelopment) {
+        setShowingSubs((prevShowingSubs) => !prevShowingSubs);
+        fetchFollowers();
+        fetchSubscribers();
+      }
     }, 30000);
 
     return () => clearInterval(interval);
