@@ -134,10 +134,12 @@ export default function Overlay({}) {
 
     const cleaned_thumbnail_url = thumbnail_url.replace('{width}', width).replace('{height}', height);
 
+    const randomNumber = Math.floor(Math.random() * 1000000);
+
     const data = {
       title: title,
       game_name: game_name,
-      thumbnail_url: cleaned_thumbnail_url,
+      thumbnail_url: `${cleaned_thumbnail_url}?rn=${randomNumber}`,
       streamDescription: streamDescription,
     };
 
