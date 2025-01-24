@@ -95,8 +95,7 @@ export default function Footer({ loggedIn }) {
       <ul className={`${styles.subs} ${isChatting || !showingSubs ? styles.hide : ''}`}>
         <li>Recent Subs... </li>
         {subs.map((sub, idx) => {
-          if (idx > 4) return;
-          console.log('THIS IS WHERE WE ARE');
+          if (idx > 4 || sub.user_name == 'Chenzorama') return;
           return <li key={`sub_${idx}`}>{sub.user_name}</li>;
         })}
       </ul>
