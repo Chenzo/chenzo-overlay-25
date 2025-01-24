@@ -11,7 +11,7 @@ export default function Footer({ loggedIn }) {
   const [isChatting, setIsChatting] = useState(false);
   const broadcaster_id = process.env.NEXT_PUBLIC_TWITCH_USERID;
   const [showingSubs, setShowingSubs] = useState(false);
-  const isDevelopment = false; //process.env.NODE_ENV === 'development';
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
   useEffect(() => {
     const accessToken = localStorage.getItem('twitchAccessToken');
