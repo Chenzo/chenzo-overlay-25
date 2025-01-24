@@ -33,6 +33,7 @@ export default function Footer({ loggedIn }) {
         }
 
         const data = await response.json();
+
         setSubs(data.data || []);
         return data.data;
       } catch (error) {
@@ -94,7 +95,7 @@ export default function Footer({ loggedIn }) {
       <ul className={`${styles.subs} ${isChatting || !showingSubs ? styles.hide : ''}`}>
         <li>Recent Subs... </li>
         {subs.map((sub, idx) => {
-          if (idx > 4) return;
+          if (idx > 4 || sub.user_name == 'Chenzorama') return;
           return <li key={`sub_${idx}`}>{sub.user_name}</li>;
         })}
       </ul>
