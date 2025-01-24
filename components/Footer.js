@@ -11,7 +11,7 @@ export default function Footer({ loggedIn }) {
   const [isChatting, setIsChatting] = useState(false);
   const broadcaster_id = process.env.NEXT_PUBLIC_TWITCH_USERID;
   const [showingSubs, setShowingSubs] = useState(false);
-  const isDevelopment = process.env.NODE_ENV === 'development';
+  const isDevelopment = false; //process.env.NODE_ENV === 'development';
 
   useEffect(() => {
     const accessToken = localStorage.getItem('twitchAccessToken');
@@ -33,6 +33,7 @@ export default function Footer({ loggedIn }) {
         }
 
         const data = await response.json();
+
         setSubs(data.data || []);
         return data.data;
       } catch (error) {
@@ -95,6 +96,7 @@ export default function Footer({ loggedIn }) {
         <li>Recent Subs... </li>
         {subs.map((sub, idx) => {
           if (idx > 4) return;
+          console.log('THIS IS WHERE WE ARE');
           return <li key={`sub_${idx}`}>{sub.user_name}</li>;
         })}
       </ul>
