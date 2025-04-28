@@ -224,8 +224,6 @@ export default function Overlay({}) {
       checkStreamStatus();
     }
 
-    listenToServer();
-
     const accessToken = localStorage.getItem('twitchAccessToken');
     console.log('accessToken from storage', accessToken);
 
