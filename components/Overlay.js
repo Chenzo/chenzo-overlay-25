@@ -31,6 +31,25 @@ export default function Overlay({}) {
 
   const [isLive, setIsLive] = useState(false);
 
+  /* const listenToSoundBoard = () => {
+    console.log('Listening to sound board events...');
+    const eventSource = new EventSource('/api/serverEvents');
+
+    eventSource.onmessage = (event) => {
+      console.log('New event:', event.data);
+      // Handle the event (update UI, play sound, etc.)
+      console.log(`play audio: ${data.theTarget}`);
+      setCurrentAudio(data.theTarget);
+    };
+
+    eventSource.onerror = (err) => {
+      console.error('EventSource failed:', err);
+      eventSource.close();
+    };
+
+    return eventSource;
+  }; */
+
   const listenToServer = () => {
     console.log('Listening to server...');
     console.log(`${murrayURL}/overlay-events`);
@@ -205,6 +224,8 @@ export default function Overlay({}) {
       checkStreamStatus();
     }
 
+    listenToServer();
+
     const accessToken = localStorage.getItem('twitchAccessToken');
     console.log('accessToken from storage', accessToken);
 
@@ -213,6 +234,13 @@ export default function Overlay({}) {
     } else {
       setLoggedIn(false);
     }
+
+    //const soundEvents = listenToSoundBoard();
+
+    return () => {
+      console.log('Cleaning up event listeners...');
+      soundEvents.close();
+    };
   }, []);
 
   return (

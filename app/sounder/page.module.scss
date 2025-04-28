@@ -1,0 +1,52 @@
+.page {
+  background: #444;
+  width: 100vw;
+  padding: 20px;
+  box-sizing: border-box;
+
+  h2 {
+    margin: 0; 
+  }
+
+  button {
+    background: #666;
+    color: #fff;
+    border: 1px solid #222;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+
+
+    &:hover {
+      background: #555;
+    }
+    width: 100px;
+    height: 80px;
+  }
+
+
+
+
+  .soundCats {
+    margin: 20px 0;
+    width: 100%;
+
+    .soundCategory {
+      margin: 20px 0;
+    }
+
+    ul {
+      list-style: none;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+  }
+}

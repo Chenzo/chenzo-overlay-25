@@ -52,7 +52,22 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
       theAudio.volume = 1;
     } else if (audioName == 'rocklobster') {
       theAudio.src = 'https://chenzorama.com/overlay/audio/rocklobster.mp3';
-      theAudio.volume = 1;
+      theAudio.volume = 0.6;
+    } else if (audioName == 'dora') {
+      theAudio.src = 'https://chenzorama.com/overlay/audio/dora-sandwich.mp3';
+      theAudio.volume = 0.6;
+    } else if (audioName == 'sitcom') {
+      theAudio.src = 'https://chenzorama.com/overlay/audio/laughs/sitcom-laughing.mp3';
+      theAudio.volume = 0.6;
+    } else if (audioName == 'biglaugh') {
+      theAudio.src = 'https://chenzorama.com/overlay/audio/laughs/mixkit-big-crowd-laughing-460.mp3';
+      theAudio.volume = 0.6;
+    } else if (audioName == 'mediumlaughclap') {
+      theAudio.src = 'https://chenzorama.com/overlay/audio/laughs/mixkit-medium-size-group-applause-and-laugh-516.mp3';
+      theAudio.volume = 0.8;
+    } else if (audioName == 'lightlaughclap') {
+      theAudio.src = 'https://chenzorama.com/overlay/audio/laughs/mixkit-light-applause-with-laughter-audience-512.mp3';
+      theAudio.volume = 0.8;
     }
 
     theAudio.addEventListener('ended', function () {
