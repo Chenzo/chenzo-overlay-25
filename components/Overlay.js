@@ -13,7 +13,7 @@ import LoginButton from './LoginButton';
 import LogOutButton from './LogOutButton';
 import FloatingAlert from './FloatingAlert';
 
-export default function Overlay({ }) {
+export default function Overlay({}) {
   const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
   const [alignment, setAlignment] = useState(50);
   const [currentAudio, setCurrentAudio] = useState('');
@@ -21,11 +21,12 @@ export default function Overlay({ }) {
   const [pushedImage, setPushedImage] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(true);
+  const [overlayToggle, setOverlayToggle] = useState('');
   const [streamDescription, setStreamDescription] = useState(
     `The crew of the Holy Bartender has set sail again on The Sea of Thieves! There's a stream! Come watch along https://www.twitch.tv/chenzorama`
   );
 
-  const isDevelopment = process.env.NODE_ENV === 'development';
+  const isDevelopment = false; // = process.env.NODE_ENV === 'development';
   console.log('isDevelopment:', isDevelopment);
 
   //const [status, setStatus] = useState('Checking...');
@@ -69,6 +70,9 @@ export default function Overlay({ }) {
         } else if (data?.theEvent == 'playaudio') {
           console.log(`play audio: ${data.theTarget}`);
           setCurrentAudio(data.theTarget);
+        } else if (data?.theEvent == 'overlayToggle') {
+          console.log(`doPopup: ${data.theTarget}`);
+          setOverlayToggle(data.theTarget);
         } else if (
           data?.theEvent == 'shipsunk' ||
           data?.theEvent == 'shipresunk' ||
@@ -249,7 +253,7 @@ export default function Overlay({ }) {
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
-      <FloatingAlert />
+      <FloatingAlert overlayToggle={overlayToggle} setOverlayToggle={setOverlayToggle} />
       <Footer loggedIn={loggedIn} />
       {!isLive && (
         <div className={styles.twitchStatus}>
