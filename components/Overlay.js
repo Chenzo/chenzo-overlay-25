@@ -11,8 +11,9 @@ import Sunks from './Sunks';
 import DiscordImage from './DiscordImage';
 import LoginButton from './LoginButton';
 import LogOutButton from './LogOutButton';
+import FloatingAlert from './FloatingAlert';
 
-export default function Overlay({}) {
+export default function Overlay({ }) {
   const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
   const [alignment, setAlignment] = useState(50);
   const [currentAudio, setCurrentAudio] = useState('');
@@ -222,6 +223,7 @@ export default function Overlay({}) {
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
+      <FloatingAlert />
       <Footer loggedIn={loggedIn} />
       {!isLive && (
         <div className={styles.twitchStatus}>
