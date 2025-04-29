@@ -1,0 +1,39 @@
+@import '/styles/_variables';
+
+.floatingAlert {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    /* right: -20px;
+    bottom: 20px; */
+
+    .border {
+        position: absolute;
+        z-index: 10;
+        right: 37px;
+        bottom: 50px;
+
+        img {
+            width: 500px;
+        }
+    }
+
+    .videoHolder {
+        position: absolute;
+        z-index: 5;
+        bottom: 70px;
+        right: 60px;
+        width: 465px;
+        height: 300px;
+        //overflow: hidden;
+    }
+
+    .video {
+        position: absolute;
+        z-index: 4;
+        top: 0px;
+        height: 100%;
+        //left: -280px;
+        //width: 875px;
+    }
+}
