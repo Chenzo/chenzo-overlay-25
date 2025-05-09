@@ -9,6 +9,7 @@ export default function SoundBoard() {
       sounds: [
         { id: 'dora', name: "Dora's Sandwich" },
         { id: 'rocklobster', name: 'Rock Lobster' },
+        { id: 'wood', name: 'Norwegian' },
       ],
     },
     {
