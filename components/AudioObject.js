@@ -68,6 +68,9 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
     } else if (audioName == 'lightlaughclap') {
       theAudio.src = 'https://chenzorama.com/overlay/audio/laughs/mixkit-light-applause-with-laughter-audience-512.mp3';
       theAudio.volume = 0.8;
+    } else if (audioName == 'wood') {
+      theAudio.src = 'https://chenzorama.com/overlay/audio/wood_intro.mp3';
+      theAudio.volume = 0.3;
     }
 
     theAudio.addEventListener('ended', function () {
