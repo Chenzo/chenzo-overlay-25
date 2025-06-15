@@ -10,8 +10,8 @@
     .border {
         position: absolute;
         z-index: 10;
-        right: 37px;
-        bottom: 50px;
+        left: -20px;
+        bottom: 125px;
 
         img {
             width: 500px;
@@ -21,8 +21,8 @@
     .videoHolder {
         position: absolute;
         z-index: 5;
-        bottom: 70px;
-        right: 60px;
+        bottom: 150px;
+        left: -12px;
         width: 465px;
         height: 300px;
         //overflow: hidden;

@@ -17,6 +17,8 @@ export default function FloatingAlert({overlayToggle}) {
             setVideoSRC('https://chenzorama.com/overlay/video/hoggle_peeing-small.mp4');
         } else if (overlayToggle === "whiskey") {
             setVideoSRC('https://chenzorama.com/overlay/video/whiskey_1.mp4');
+        } else if (overlayToggle === "family") {
+            setVideoSRC('https://chenzorama.com/overlay/video/family.mp4');
         }
 
     }, [overlayToggle]);

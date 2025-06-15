@@ -1,3 +1,6 @@
-.test {
-  color: red;
+.page-off {
+  background-image: url('/obs_placement.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
