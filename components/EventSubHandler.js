@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { rewards } from '../config/rewards';
 
 export default function EventSubHandler({ onCoinRewardRedeemed }) {
   const [isConnected, setIsConnected] = useState(false);
@@ -57,11 +58,16 @@ export default function EventSubHandler({ onCoinRewardRedeemed }) {
             const redemption = payload.event;
             console.log('🎁 Channel point redemption detected:', redemption);
             
-            // Check if this is the Fake Coin reward
-            if (redemption.reward.title.toLowerCase().includes('fake coin')) {
-              console.log('🪙 FAKE COIN REDEMPTION DETECTED!');
+            // Check if this is any of our configured rewards
+            const matchedReward = rewards.find(reward => 
+              redemption.reward.title.toLowerCase().includes(reward.title.toLowerCase())
+            );
+
+            if (matchedReward) {
+              console.log(`🪙 ${matchedReward.title.toUpperCase()} REDEMPTION DETECTED!`);
               console.log('👤 Redeemed by:', redemption.user_name);
               console.log('💰 Cost:', redemption.reward.cost);
+              console.log('🎬 Animation type:', matchedReward.animation.type);
               onCoinRewardRedeemed();
             }
           }
