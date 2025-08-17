@@ -83,6 +83,13 @@ export default function TestCoinButton({ onTestCoin }) {
     setIsChecking(false);
   };
 
+  // Only show in development mode
+  const isDevelopment = process.env.NODE_ENV === 'development';
+
+  if (!isDevelopment) {
+    return null;
+  }
+
   return (
     <div style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 1001 }}>
       <button

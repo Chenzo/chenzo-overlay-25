@@ -14,6 +14,8 @@ import LogOutButton from './LogOutButton';
 import FloatingAlert from './FloatingAlert';
 import AncientCoin from './AncientCoin';
 import TestCoinButton from './TestCoinButton';
+import RewardCreator from './RewardCreator';
+import EventSubHandler from './EventSubHandler';
 
 export default function Overlay({}) {
   const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
@@ -269,6 +271,8 @@ export default function Overlay({}) {
       <Footer loggedIn={loggedIn} onCoinRewardRedeemed={handleCoinRewardRedeemed} />
       <AncientCoin showCoin={showCoin} onCoinHidden={handleCoinHidden} />
       <TestCoinButton onTestCoin={handleCoinRewardRedeemed} />
+      <RewardCreator />
+      <EventSubHandler onCoinRewardRedeemed={handleCoinRewardRedeemed} />
       {!isLive && (
         <div className={styles.twitchStatus}>
           <img src='/images/disconnect-plug-icon.png' alt='' />
