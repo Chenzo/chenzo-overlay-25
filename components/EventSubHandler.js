@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { rewards } from '../config/rewards';
 
-export default function EventSubHandler({ onCoinRewardRedeemed }) {
+export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio }) {
   const [isConnected, setIsConnected] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -68,7 +68,14 @@ export default function EventSubHandler({ onCoinRewardRedeemed }) {
               console.log('👤 Redeemed by:', redemption.user_name);
               console.log('💰 Cost:', redemption.reward.cost);
               console.log('🎬 Animation type:', matchedReward.animation.type);
-              onCoinRewardRedeemed();
+              
+              // Handle different animation types
+              if (matchedReward.animation.type === 'ancient-coin') {
+                onCoinRewardRedeemed(); // This triggers the AncientCoin component (which handles its own audio)
+              } else if (matchedReward.animation.type === 'sail-away' && matchedReward.animation.audioObject) {
+                console.log(`🎵 Playing AudioObject: ${matchedReward.animation.audioObject}`);
+                setCurrentAudio(matchedReward.animation.audioObject);
+              }
             }
           }
         }

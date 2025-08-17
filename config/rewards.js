@@ -20,8 +20,27 @@ export const rewards = [
     animation: {
       type: 'ancient-coin',
       duration: 3000, // milliseconds
-      sound: '/audio/coin.mp3',
-      volume: 0.5,
+      // Audio is handled internally by the AncientCoin component
+    },
+  },
+  {
+    id: 'sail-away',
+    title: 'Sail Away',
+    cost: 150,
+    prompt: 'Play the sailing away song!',
+    is_enabled: true,
+    is_user_input_required: false,
+    background_color: '#4FC3F7',
+    should_redemptions_skip_request_queue: true,
+    default_image: {
+      url_1x: 'https://chenzorama.com/overlay/twitch/redemption_icons/sail_28.png',
+      url_2x: 'https://chenzorama.com/overlay/twitch/redemption_icons/sail_56.png',
+      url_4x: 'https://chenzorama.com/overlay/twitch/redemption_icons/sail_112.png',
+    },
+    animation: {
+      type: 'sail-away',
+      duration: 5000, // 5 seconds for the song
+      audioObject: 'sailingaway', // Use AudioObject system instead of direct sound
     },
   },
   // Add more rewards here:
@@ -50,19 +69,17 @@ export const rewards = [
 
 // Helper function to get reward by ID
 export const getRewardById = (id) => {
-  return rewards.find(reward => reward.id === id);
+  return rewards.find((reward) => reward.id === id);
 };
 
 // Helper function to get reward by title (case-insensitive)
 export const getRewardByTitle = (title) => {
-  return rewards.find(reward => 
-    reward.title.toLowerCase().includes(title.toLowerCase())
-  );
+  return rewards.find((reward) => reward.title.toLowerCase().includes(title.toLowerCase()));
 };
 
 // Helper function to get all enabled rewards
 export const getEnabledRewards = () => {
-  return rewards.filter(reward => reward.is_enabled);
+  return rewards.filter((reward) => reward.is_enabled);
 };
 
 // Default settings for all rewards

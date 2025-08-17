@@ -73,7 +73,7 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
       theAudio.volume = 0.6;
     } else if (audioName == 'sailingaway') {
       theAudio.src = 'https://chenzorama.com/overlay/audio/sailingaway.mp3';
-      theAudio.volume = 0.6;
+      theAudio.volume = 0.3;
     }
 
     theAudio.addEventListener('ended', function () {

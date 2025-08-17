@@ -272,7 +272,7 @@ export default function Overlay({}) {
       <AncientCoin showCoin={showCoin} onCoinHidden={handleCoinHidden} />
       <TestCoinButton onTestCoin={handleCoinRewardRedeemed} />
       <RewardCreator />
-      <EventSubHandler onCoinRewardRedeemed={handleCoinRewardRedeemed} />
+      <EventSubHandler onCoinRewardRedeemed={handleCoinRewardRedeemed} setCurrentAudio={setCurrentAudio} />
       {!isLive && (
         <div className={styles.twitchStatus}>
           <img src='/images/disconnect-plug-icon.png' alt='' />
