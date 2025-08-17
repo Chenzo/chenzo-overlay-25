@@ -70,7 +70,10 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
       theAudio.volume = 0.8;
     } else if (audioName == 'wood') {
       theAudio.src = 'https://chenzorama.com/overlay/audio/wood_intro.mp3';
-      theAudio.volume = 0.3;
+      theAudio.volume = 0.6;
+    } else if (audioName == 'sailingaway') {
+      theAudio.src = 'https://chenzorama.com/overlay/audio/sailingaway.mp3';
+      theAudio.volume = 0.6;
     }
 
     theAudio.addEventListener('ended', function () {

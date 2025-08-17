@@ -10,6 +10,7 @@ export default function SoundBoard() {
         { id: 'dora', name: "Dora's Sandwich" },
         { id: 'rocklobster', name: 'Rock Lobster' },
         { id: 'wood', name: 'Norwegian' },
+        { id: 'sailingaway', name: 'Sailing Away' },
       ],
     },
     {
