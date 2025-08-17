@@ -12,6 +12,8 @@ import DiscordImage from './DiscordImage';
 import LoginButton from './LoginButton';
 import LogOutButton from './LogOutButton';
 import FloatingAlert from './FloatingAlert';
+import AncientCoin from './AncientCoin';
+import TestCoinButton from './TestCoinButton';
 
 export default function Overlay({}) {
   const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
@@ -32,6 +34,7 @@ export default function Overlay({}) {
   //const [status, setStatus] = useState('Checking...');
 
   const [isLive, setIsLive] = useState(false);
+  const [showCoin, setShowCoin] = useState(false);
 
   /* const listenToSoundBoard = () => {
     console.log('Listening to sound board events...');
@@ -223,6 +226,15 @@ export default function Overlay({}) {
     setMenuOpen(false);
   };
 
+  const handleCoinRewardRedeemed = () => {
+    console.log('Ancient coin reward redeemed!');
+    setShowCoin(true);
+  };
+
+  const handleCoinHidden = () => {
+    setShowCoin(false);
+  };
+
   useEffect(() => {
     if (!isDevelopment) {
       listenToServer();
@@ -254,7 +266,9 @@ export default function Overlay({}) {
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
       <FloatingAlert overlayToggle={overlayToggle} setOverlayToggle={setOverlayToggle} />
-      <Footer loggedIn={loggedIn} />
+      <Footer loggedIn={loggedIn} onCoinRewardRedeemed={handleCoinRewardRedeemed} />
+      <AncientCoin showCoin={showCoin} onCoinHidden={handleCoinHidden} />
+      <TestCoinButton onTestCoin={handleCoinRewardRedeemed} />
       {!isLive && (
         <div className={styles.twitchStatus}>
           <img src='/images/disconnect-plug-icon.png' alt='' />
