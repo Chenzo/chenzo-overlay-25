@@ -6,11 +6,16 @@ export const rewards = [
     id: 'fake-coin',
     title: 'Drop a Fake Coin',
     cost: 10,
-    prompt: 'Drop a fake coin and make twitch you are engaging with the crew!',
+    prompt: 'Drop a fake coin and make Twitch see you are engaging with the crew!',
     is_enabled: true,
     is_user_input_required: false,
     background_color: '#FFD54F',
     should_redemptions_skip_request_queue: true,
+    image: {
+      url_1x: 'https://chenzorama.com/overlay/twitch/redemption_icons/ac_28.png',
+      url_2x: 'https://chenzorama.com/overlay/twitch/redemption_icons/ac_56.png',
+      url_4x: 'https://chenzorama.com/overlay/twitch/redemption_icons/ac_112.png',
+    },
     default_image: {
       url_1x: 'https://chenzorama.com/overlay/twitch/redemption_icons/ac_28.png',
       url_2x: 'https://chenzorama.com/overlay/twitch/redemption_icons/ac_56.png',

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import ChatRelay from './ChatRelay';
 import styles from './Footer.module.scss';
 
-export default function Footer({ loggedIn, onClientReady }) {
+export default function Footer({ loggedIn }) {
   const [followers, setFollowers] = useState([]);
   const [subs, setSubs] = useState([]);
   const [isChatting, setIsChatting] = useState(false);
@@ -99,7 +99,7 @@ export default function Footer({ loggedIn, onClientReady }) {
           return <li key={`sub_${idx}`}>{sub.user_name}</li>;
         })}
       </ul>
-      <ChatRelay setIsChatting={setIsChatting} onClientReady={onClientReady} />
+      <ChatRelay setIsChatting={setIsChatting} />
     </footer>
   );
 }

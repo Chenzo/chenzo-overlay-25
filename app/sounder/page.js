@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import styles from './page.module.scss';
 
 export default function SoundBoard() {
+  const [murrayText, setMurrayText] = useState('');
   const soundsArray = [
     {
       name: 'New',
@@ -58,6 +60,32 @@ export default function SoundBoard() {
     });
   };
 
+  const handleMurraySpeaks = async () => {
+    if (!murrayText.trim()) return;
+
+    console.log('Murray speaks:', murrayText);
+    const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
+
+    try {
+      const response = await fetch(`${murrayURL}/murray-talks`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: murrayText,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Murray message sent successfully');
+        setMurrayText(''); // Clear the input after successful send
+      } else {
+        console.error('Failed to send Murray message');
+      }
+    } catch (error) {
+      console.error('Error sending Murray message:', error);
+    }
+  };
+
   return (
     <div className={styles.page}>
       <h2>Chenzo Sound Remote</h2>
@@ -79,6 +107,21 @@ export default function SoundBoard() {
             </ul>
           </article>
         ))}
+      </section>
+
+      <section className={styles.murraySpeaks}>
+        <h2>Murray Speaks</h2>
+        <div className={styles.murrayInput}>
+          <textarea
+            value={murrayText}
+            onChange={(e) => setMurrayText(e.target.value)}
+            placeholder='Enter text for Murray to speak...'
+            rows={3}
+          />
+          <button onClick={handleMurraySpeaks} className={styles.murraySubmit}>
+            Send
+          </button>
+        </div>
       </section>
     </div>
   );
