@@ -37,7 +37,6 @@ export default function Overlay({}) {
 
   const [isLive, setIsLive] = useState(false);
   const [showCoin, setShowCoin] = useState(false);
-  const [chatClient, setChatClient] = useState(null);
 
   /* const listenToSoundBoard = () => {
     console.log('Listening to sound board events...');
@@ -238,10 +237,6 @@ export default function Overlay({}) {
     setShowCoin(false);
   };
 
-  const handleChatClientReady = (client) => {
-    setChatClient(client);
-  };
-
   useEffect(() => {
     if (!isDevelopment) {
       listenToServer();
@@ -273,7 +268,7 @@ export default function Overlay({}) {
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
       <FloatingAlert overlayToggle={overlayToggle} setOverlayToggle={setOverlayToggle} />
-      <Footer loggedIn={loggedIn} onCoinRewardRedeemed={handleCoinRewardRedeemed} onClientReady={handleChatClientReady} />
+      <Footer loggedIn={loggedIn} onCoinRewardRedeemed={handleCoinRewardRedeemed} />
       <AncientCoin showCoin={showCoin} onCoinHidden={handleCoinHidden} />
       <TestCoinButton onTestCoin={handleCoinRewardRedeemed} />
       <RewardCreator />

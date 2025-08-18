@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import { rewards } from '../config/rewards';
 
 export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio }) {
-  const [isConnected, setIsConnected] = useState(false);
-  const [sessionId, setSessionId] = useState(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
@@ -33,7 +31,6 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
 
       ws.onopen = () => {
         console.log('🔌 Connected to Twitch EventSub WebSocket');
-        setIsConnected(true);
       };
 
       ws.onmessage = async (event) => {
@@ -43,7 +40,6 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
         // Handle welcome message
         if (data.metadata?.message_type === 'session_welcome') {
           const sessionId = data.payload?.session?.id;
-          setSessionId(sessionId);
           console.log('🎫 Session ID received:', sessionId);
 
           // Subscribe to channel point redemptions
@@ -53,13 +49,13 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
         // Handle notification messages
         if (data.metadata?.message_type === 'notification') {
           const payload = data.payload;
-          
+
           if (payload.subscription?.type === 'channel.channel_points_custom_reward_redemption.add') {
             const redemption = payload.event;
             console.log('🎁 Channel point redemption detected:', redemption);
-            
+
             // Check if this is any of our configured rewards
-            const matchedReward = rewards.find(reward => 
+            const matchedReward = rewards.find((reward) =>
               redemption.reward.title.toLowerCase().includes(reward.title.toLowerCase())
             );
 
@@ -68,16 +64,17 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
               console.log('👤 Redeemed by:', redemption.user_name);
               console.log('💰 Cost:', redemption.reward.cost);
               console.log('🎬 Animation type:', matchedReward.animation.type);
-              
+
               // Handle different animation types
               if (matchedReward.animation.type === 'ancient-coin') {
                 onCoinRewardRedeemed(); // This triggers the AncientCoin component (which handles its own audio)
               } else if (matchedReward.animation.type === 'sail-away' && matchedReward.animation.audioObject) {
                 console.log(`🎵 Playing AudioObject: ${matchedReward.animation.audioObject}`);
                 setCurrentAudio(matchedReward.animation.audioObject);
+              } else if (matchedReward.animation.type === 'they-did-it' && matchedReward.animation.audioObject) {
+                console.log(`🎵 Playing AudioObject: ${matchedReward.animation.audioObject}`);
+                setCurrentAudio(matchedReward.animation.audioObject);
               }
-
-
             }
           }
         }
@@ -106,13 +103,11 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
       ws.onerror = (error) => {
         console.error('❌ EventSub WebSocket error:', error);
         console.log('This error is usually harmless - the connection will retry automatically');
-        setIsConnected(false);
       };
 
       ws.onclose = () => {
         console.log('🔌 EventSub WebSocket disconnected');
-        setIsConnected(false);
-        
+
         // Attempt to reconnect after 5 seconds
         reconnectTimer = setTimeout(() => {
           console.log('🔄 Attempting to reconnect to EventSub...');
@@ -126,7 +121,7 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
         // First, get existing subscriptions
         const listResponse = await fetch('https://api.twitch.tv/helix/eventsub/subscriptions', {
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
             'Client-Id': clientId,
           },
         });
@@ -142,7 +137,7 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
               await fetch(`https://api.twitch.tv/helix/eventsub/subscriptions?id=${sub.id}`, {
                 method: 'DELETE',
                 headers: {
-                  'Authorization': `Bearer ${accessToken}`,
+                  Authorization: `Bearer ${accessToken}`,
                   'Client-Id': clientId,
                 },
               });
@@ -151,13 +146,13 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
         }
 
         // Wait a moment for deletions to process
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
         // Create the new subscription
         const response = await fetch('https://api.twitch.tv/helix/eventsub/subscriptions', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
             'Client-Id': clientId,
             'Content-Type': 'application/json',
           },
@@ -194,15 +189,18 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
     // Cleanup function
     return () => {
       console.log('🧹 Cleaning up EventSub connection...');
+
       if (ws) {
         ws.close();
       }
+
       if (reconnectTimer) {
         clearTimeout(reconnectTimer);
       }
+
       setIsInitialized(false);
     };
-      }, []); // Empty dependency array to prevent re-initialization
+  }, []); // Empty dependency array to prevent re-initialization
 
   return null; // This component doesn't render anything
 }

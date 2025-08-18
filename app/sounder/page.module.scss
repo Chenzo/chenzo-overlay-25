@@ -49,4 +49,63 @@
       gap: 18px;
     }
   }
+
+  .murraySpeaks {
+    margin: 40px 0 20px 0;
+    padding: 20px;
+    background: #333;
+    border-radius: 8px;
+    border: 1px solid #555;
+
+    h2 {
+      margin-bottom: 15px;
+      color: #fff;
+    }
+
+    .murrayInput {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+
+      textarea {
+        flex: 1;
+        background: #222;
+        color: #fff;
+        border: 1px solid #555;
+        border-radius: 4px;
+        padding: 10px;
+        font-size: 14px;
+        resize: vertical;
+        min-height: 60px;
+        font-family: inherit;
+
+        &:focus {
+          outline: none;
+          border-color: #888;
+        }
+
+        &::placeholder {
+          color: #888;
+        }
+      }
+
+      .murraySubmit {
+        background: #4a90e2;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        height: auto;
+        width: auto;
+        min-width: 80px;
+
+        &:hover {
+          background: #357abd;
+        }
+      }
+    }
+  }
 }
