@@ -76,6 +76,8 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
                 console.log(`🎵 Playing AudioObject: ${matchedReward.animation.audioObject}`);
                 setCurrentAudio(matchedReward.animation.audioObject);
               }
+
+
             }
           }
         }

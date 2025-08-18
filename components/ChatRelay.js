@@ -3,7 +3,7 @@ import tmi from 'tmi.js';
 import { useEffect, useState } from 'react';
 import styles from './ChatRelay.module.scss';
 
-export default function ChatRelay({ setIsChatting }) {
+export default function ChatRelay({ setIsChatting, onClientReady }) {
   const [latestChat, setLatestChat] = useState(null);
   const [messageId, setMessageId] = useState(0); // Track unique message IDs
 
@@ -40,6 +40,13 @@ export default function ChatRelay({ setIsChatting }) {
     });
 
     client.connect();
+
+    client.on('connected', () => {
+      console.log('✅ Connected to Twitch chat');
+      if (onClientReady) {
+        onClientReady(client);
+      }
+    });
 
     client.on('message', (channel, tags, message, self) => {
       //console.log(`${tags['display-name']}: ${message}`);
