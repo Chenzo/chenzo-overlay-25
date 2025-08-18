@@ -1,0 +1,43 @@
+.ancientCoinContainer {
+  position: fixed;
+  top: 20px; /* Start above the viewport (behind header) */
+  z-index: 1000;
+  pointer-events: none;
+  animation: coinDrop 1s ease-out forwards;
+}
+
+.ancientCoin {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  //filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+  animation: coinGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes coinDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.8);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(80px) scale(1.1);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(50px) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(50px) scale(1);
+  }
+}
+
+@keyframes coinGlow {
+  0% {
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+  }
+  100% {
+    filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.6));
+  }
+}

@@ -11,7 +11,7 @@
     transform: (translateX(-50%));
     filter: drop-shadow(0px 1px 6px #000);
     transition: filter 1s;
-    z-index: 10;
+    z-index: 1100;
 
     &.evilness {
         filter: drop-shadow(0px 0px 16px #ff0000);
