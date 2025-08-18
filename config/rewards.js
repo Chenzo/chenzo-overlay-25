@@ -48,6 +48,26 @@ export const rewards = [
       audioObject: 'sailingaway', // Use AudioObject system instead of direct sound
     },
   },
+  {
+    id: 'they-did-it',
+    title: 'They Did It',
+    cost: 1000,
+    prompt: "Celebrate with Dora's sandwich song!",
+    is_enabled: true,
+    is_user_input_required: false,
+    background_color: '#FF9800',
+    should_redemptions_skip_request_queue: true,
+    default_image: {
+      url_1x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_28.png',
+      url_2x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_56.png',
+      url_4x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_112.png',
+    },
+    animation: {
+      type: 'they-did-it',
+      duration: 5000, // 5 seconds for the song
+      audioObject: 'dora', // Use AudioObject system to play dora.mp3
+    },
+  },
   // Add more rewards here:
   // {
   //   id: 'another-reward',
