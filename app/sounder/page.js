@@ -13,6 +13,7 @@ export default function SoundBoard() {
         { id: 'rocklobster', name: 'Rock Lobster' },
         { id: 'wood', name: 'Norwegian' },
         { id: 'sailingaway', name: 'Sailing Away' },
+        { id: 'peoples_song', name: "People's Song" },
       ],
     },
     {

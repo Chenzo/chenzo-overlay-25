@@ -31,7 +31,7 @@ export const rewards = [
   {
     id: 'sail-away',
     title: 'Sail Away',
-    cost: 150,
+    cost: 1150,
     prompt: 'Play the sailing away song!',
     is_enabled: true,
     is_user_input_required: false,

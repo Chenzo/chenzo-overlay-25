@@ -93,6 +93,9 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
     } else if (audioName == 'sailingaway') {
       audioRef.current.src = 'https://chenzorama.com/overlay/audio/sailingaway.mp3';
       audioRef.current.volume = 0.3;
+    } else if (audioName == 'peoples_song') {
+      audioRef.current.src = 'https://chenzorama.com/overlay/audio/peoples_song.mp3';
+      audioRef.current.volume = 0.7;
     }
 
     audioRef.current.addEventListener('ended', function () {
