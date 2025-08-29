@@ -14,6 +14,18 @@ export const authorizedUsers = [
     user: 'lyesm1th',
     level: 1,
   },
+  {
+    user: 'pe0plesrepublic',
+    level: 1,
+  },
+  {
+    user: 'grandsonofsofis',
+    level: 1,
+  },
+  {
+    user: 'untruehero',
+    level: 1,
+  },
 ];
 
 // Helper function to get user access level
