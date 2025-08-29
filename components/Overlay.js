@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { hasFullAccess } from '../config/authorizedUsers';
 
 import styles from './Overlay.module.scss';
 import Header from './Header';
@@ -260,6 +261,81 @@ export default function Overlay({}) {
     };
   }, []);
 
+  // Check if logged in user has level 0 access
+  const [hasLevel0Access, setHasLevel0Access] = useState(false);
+  const [username, setUsername] = useState(null);
+
+  // Fetch user data and check authorization when logged in
+  useEffect(() => {
+    if (loggedIn) {
+      const accessToken = localStorage.getItem('twitchAccessToken');
+
+      if (accessToken) {
+        const fetchUserAndCheckAuth = async () => {
+          try {
+            const response = await fetch('https://api.twitch.tv/helix/users', {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Client-Id': process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
+              },
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+
+              if (data.data && data.data.length > 0) {
+                const user = data.data[0];
+                setUsername(user.login);
+                const hasAccess = hasFullAccess(user.login);
+                setHasLevel0Access(hasAccess);
+                console.log('username', user.login, 'hasAccess', hasAccess);
+              }
+            }
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+            setHasLevel0Access(false);
+          }
+        };
+
+        fetchUserAndCheckAuth();
+      }
+    } else {
+      setHasLevel0Access(false);
+      setUsername(null);
+    }
+  }, [loggedIn]);
+
+  if (!loggedIn) {
+    return (
+      <section className={styles.overlay}>
+        <LoginButton />
+        123123
+      </section>
+    );
+  }
+
+  if (!hasLevel0Access) {
+    return (
+      <section className={styles.overlay}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            color: '#333',
+            gap: '20px',
+          }}
+        >
+          <h1>Access Denied</h1>
+          {username && <p style={{ fontSize: '14px', color: '#666' }}>Username: {username}</p>}
+          <LogOutButton setLoggedIn={setLoggedIn} redirectTo={window.location.pathname} />
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className={styles.overlay}>
       <Header alignment={alignment} />
@@ -283,8 +359,8 @@ export default function Overlay({}) {
         <div className={styles.menuWindow}>
           <div className={styles.menuContent}>
             <button className={styles.closeMenu} onClick={closeMenu} />
-            {loggedIn && <LogOutButton setLoggedIn={setLoggedIn} />}
-            {!loggedIn && <LoginButton />}
+            {loggedIn && <LogOutButton setLoggedIn={setLoggedIn} redirectTo={window.location.pathname} />}
+
             <hr />
             <div className={styles.testButton}>
               <button onClick={fakePostToAnounce}>TEST POST TO DISCORD</button>

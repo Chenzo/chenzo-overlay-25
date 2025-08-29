@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './page.module.scss';
+import AuthGuard from '../../components/AuthGuard';
 
 export default function SoundBoard() {
   const [murrayText, setMurrayText] = useState('');
@@ -88,42 +89,44 @@ export default function SoundBoard() {
   };
 
   return (
-    <div className={styles.page}>
-      <h2>Chenzo Sound Remote</h2>
-      <button onClick={doThing} value='stop'>
-        stop
-      </button>
-      <section className={styles.soundCats}>
-        {soundsArray.map((category) => (
-          <article key={category.name} className={styles.soundCategory}>
-            <h2>{category.name}</h2>
-            <ul>
-              {category.sounds.map((sound) => (
-                <li key={sound.id}>
-                  <button onClick={doThing} value={sound.id}>
-                    {sound.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
-      </section>
+    <AuthGuard>
+      <div className={styles.page}>
+        <h2>Chenzo Sound Remote</h2>
+        <button onClick={doThing} value='stop'>
+          stop
+        </button>
+        <section className={styles.soundCats}>
+          {soundsArray.map((category) => (
+            <article key={category.name} className={styles.soundCategory}>
+              <h2>{category.name}</h2>
+              <ul>
+                {category.sounds.map((sound) => (
+                  <li key={sound.id}>
+                    <button onClick={doThing} value={sound.id}>
+                      {sound.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </section>
 
-      <section className={styles.murraySpeaks}>
-        <h2>Murray Speaks</h2>
-        <div className={styles.murrayInput}>
-          <textarea
-            value={murrayText}
-            onChange={(e) => setMurrayText(e.target.value)}
-            placeholder='Enter text for Murray to speak...'
-            rows={3}
-          />
-          <button onClick={handleMurraySpeaks} className={styles.murraySubmit}>
-            Send
-          </button>
-        </div>
-      </section>
-    </div>
+        <section className={styles.murraySpeaks}>
+          <h2>Murray Speaks</h2>
+          <div className={styles.murrayInput}>
+            <textarea
+              value={murrayText}
+              onChange={(e) => setMurrayText(e.target.value)}
+              placeholder='Enter text for Murray to speak...'
+              rows={3}
+            />
+            <button onClick={handleMurraySpeaks} className={styles.murraySubmit}>
+              Send
+            </button>
+          </div>
+        </section>
+      </div>
+    </AuthGuard>
   );
 }

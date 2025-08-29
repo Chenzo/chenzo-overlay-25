@@ -1,6 +1,6 @@
 'use client';
 
-export default function LogOutButton({ setLoggedIn }) {
+export default function LogOutButton({ setLoggedIn, redirectTo = '/' }) {
   const handleLogout = () => {
     // Clear all Twitch-related data
     localStorage.removeItem('twitchAccessToken');
@@ -17,7 +17,7 @@ export default function LogOutButton({ setLoggedIn }) {
     setLoggedIn(false);
     
     // Force a complete page reload to clear any cached state
-    window.location.href = '/';
+    window.location.href = redirectTo;
   };
 
   return <button onClick={handleLogout}>LOG OUT OF TWITCH</button>;
