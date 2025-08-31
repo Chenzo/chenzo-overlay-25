@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import styles from './FloatingAlert.module.scss';
 
+const BUCKET_URL = process.env.NEXT_PUBLIC_BUCKET_URL;
+
 
 export default function FloatingAlert({overlayToggle}) {
 
@@ -14,11 +16,11 @@ export default function FloatingAlert({overlayToggle}) {
         setShowAFK(overlayToggle !== "" ? true : false);
 
         if (overlayToggle === "afk") {
-            setVideoSRC('https://chenzorama.com/overlay/video/hoggle_peeing-small.mp4');
+            setVideoSRC(`${BUCKET_URL}/video/hoggle_peeing-small.mp4`);
         } else if (overlayToggle === "whiskey") {
-            setVideoSRC('https://chenzorama.com/overlay/video/whiskey_1.mp4');
+            setVideoSRC(`${BUCKET_URL}/video/whiskey_1.mp4`);
         } else if (overlayToggle === "family") {
-            setVideoSRC('https://chenzorama.com/overlay/video/family.mp4');
+            setVideoSRC(`${BUCKET_URL}/video/family.mp4`);
         }
 
     }, [overlayToggle]);
@@ -27,8 +29,7 @@ export default function FloatingAlert({overlayToggle}) {
         return (
             <article className={styles.floatingAlert}>
                 <div className={styles.border}>
-                    <img src="https://chenzorama.com/overlay/images/ribbons-small.png" alt="" />
-    
+                    <img src={`${BUCKET_URL}/images/ribbons-small.png`} alt="" />
                 </div>
                 <div className={`${styles.videoHolder} ${styles.torn_3} ${styles.ds}`} key={videoSRC}>
                     <video autoPlay muted loop className={styles.video}>
