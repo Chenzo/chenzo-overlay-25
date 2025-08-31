@@ -95,6 +95,18 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
     } else if (audioName == 'peoples_song') {
       audioRef.current.src = `${BUCKET_URL}/audio/peoples_song.mp3`;
       audioRef.current.volume = 0.6;
+    } else if (audioName == 'hero') {
+      audioRef.current.src = `${BUCKET_URL}/audio/greatest_hero.mp3`;
+      audioRef.current.volume = 0.7;
+    } else if (audioName == 'chenzo') {
+      audioRef.current.src = `${BUCKET_URL}/audio/chenzo-shanty.mp3`;
+      audioRef.current.volume = 0.6;
+    } else if (audioName == 'bbetty1') {
+      audioRef.current.src = `${BUCKET_URL}/audio/Black_Betty_Intro.mp3`;
+      audioRef.current.volume = 0.7;
+    } else if (audioName == 'bbetty2') {
+      audioRef.current.src = `${BUCKET_URL}/audio/Black-Betty-Rambalam.mp3`;
+      audioRef.current.volume = 0.7;
     }
 
     audioRef.current.addEventListener('ended', function () {

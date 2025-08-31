@@ -12,13 +12,22 @@ export default function SoundBoard() {
       sounds: [
         { id: 'dora', name: "Dora's Sandwich" },
         { id: 'rocklobster', name: 'Rock Lobster' },
-        { id: 'wood', name: 'Norwegian' },
         { id: 'sailingaway', name: 'Sailing Away' },
-        { id: 'peoples_song', name: "People's Song" },
+        { id: 'bbetty1', name: 'Black Betty Intro' },
+        { id: 'bbetty2', name: 'Black Betty Rambalam' },
       ],
     },
     {
-      name: 'classics',
+      name: 'Pirates',
+      sounds: [
+        { id: 'peoples_song', name: "People's Song" },
+        { id: 'hero', name: 'Greatest American Hero' },
+        { id: 'chenzo', name: "Chenzo's Theme" },
+        { id: 'wood', name: 'Norwegian' },
+      ],
+    },
+    {
+      name: 'Classics',
       sounds: [
         { id: '3', name: '3' },
         { id: 'digs', name: 'Digs' },
@@ -91,7 +100,7 @@ export default function SoundBoard() {
   return (
     <AuthGuard>
       <div className={styles.page}>
-        <h2>Chenzo Sound Remote</h2>
+        <h1>Chenzo's Overlay Soundboard</h1>
         <button onClick={doThing} value='stop'>
           stop
         </button>
