@@ -4,9 +4,9 @@
 export const rewards = [
   {
     id: 'fake-coin',
-    title: 'Drop a Fake Coin',
+    title: 'Toss a Coin to Your Pirate',
     cost: 10,
-    prompt: 'Drop a fake coin and make Twitch see you are engaging with the crew!',
+    prompt: 'Toss a coin to your pirate and show them some love! 🏴‍☠️',
     is_enabled: true,
     is_user_input_required: false,
     background_color: '#FFD54F',

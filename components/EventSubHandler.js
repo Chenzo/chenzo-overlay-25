@@ -171,7 +171,7 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
 
         if (response.ok) {
           const data = await response.json();
-          console.log('✅ EventSub subscription created for Fake Coin detection:', data);
+          console.log('✅ EventSub subscription created for reward detection:', data);
         } else {
           const errorData = await response.json();
           console.error('❌ Failed to create EventSub subscription:', errorData);

@@ -21,8 +21,10 @@ export default function SoundBoard() {
       name: 'Pirates',
       sounds: [
         { id: 'peoples_song', name: "People's Song" },
+        { id: 'peoples_song_short', name: "Peoples' Song (short)" },
         { id: 'hero', name: 'Greatest American Hero' },
         { id: 'chenzo', name: "Chenzo's Theme" },
+        { id: 'chenzo_short', name: "Chenzo's Theme (short)" },
         { id: 'wood', name: 'Norwegian' },
       ],
     },
@@ -103,6 +105,16 @@ export default function SoundBoard() {
         <h1>Chenzo's Overlay Soundboard</h1>
         <button onClick={doThing} value='stop'>
           stop
+        </button>
+        <button
+          onClick={async () => {
+            // Forcefully stop first, then play the scratch sound
+            await doThing({ target: { value: 'stop' } });
+            setTimeout(() => doThing({ target: { value: 'scratch' } }), 50);
+          }}
+          value='scratch'
+        >
+          Stop (Forced)
         </button>
         <section className={styles.soundCats}>
           {soundsArray.map((category) => (

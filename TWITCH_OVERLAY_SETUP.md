@@ -2,7 +2,7 @@
 
 ## 🎯 **Overview**
 
-This Twitch overlay includes a complete channel point reward system that automatically creates a "Fake Coin" reward and displays an animated ancient coin when someone redeems it. The system uses EventSub WebSocket for real-time detection.
+This Twitch overlay includes a complete channel point reward system that automatically creates a "Toss a Coin to Your Pirate" reward and displays an animated ancient coin when someone redeems it. The system uses EventSub WebSocket for real-time detection.
 
 ## 🚀 **Quick Start**
 
@@ -38,19 +38,19 @@ Go to [Twitch Developer Console](https://dev.twitch.tv/console) and:
 ## 🪙 **How the System Works**
 
 ### **Automatic Setup (When Overlay Loads):**
-1. **RewardCreator** → Creates "Fake Coin" reward with custom icons
+1. **RewardCreator** → Creates "Toss a Coin to Your Pirate" reward with custom icons
 2. **EventSubHandler** → Connects to Twitch EventSub WebSocket
 3. **Subscription Management** → Cleans up old subscriptions, creates new one
-4. **Real-time Detection** → Listens for "Fake Coin" redemptions
+4. **Real-time Detection** → Listens for "Toss a Coin to Your Pirate" redemptions
 
-### **When Someone Redeems Fake Coin:**
+### **When Someone Redeems Toss a Coin to Your Pirate:**
 1. **EventSub detects redemption** → Real-time WebSocket notification
 2. **Console logs details** → Shows who redeemed it
 3. **Triggers animation** → Ancient coin drops from header at random position
 4. **Coin displays for 3 seconds** → Beautiful glow and scale animation
 
 ### **Components:**
-- **RewardCreator** - Automatically creates "Fake Coin" reward
+- **RewardCreator** - Automatically creates "Toss a Coin to Your Pirate" reward
 - **EventSubHandler** - Real-time redemption detection via WebSocket
 - **AncientCoin** - Beautiful coin animation with random positioning
 - **TestCoinButton** - Manual testing and reward checking
@@ -64,7 +64,7 @@ Go to [Twitch Developer Console](https://dev.twitch.tv/console) and:
 
 ### **Real Testing:**
 1. **Go to your Twitch channel**
-2. **Redeem the "Fake Coin" reward** (costs 1 channel point)
+2. **Redeem the "Toss a Coin to Your Pirate" reward** (costs 1 channel point)
 3. **Watch the overlay** - Ancient coin should appear
 4. **Check console** - Should see detection logs
 
@@ -81,17 +81,17 @@ Go to [Twitch Developer Console](https://dev.twitch.tv/console) and:
 - **"Subscription failed"** → Check console for specific error details
 
 ### **Reward Issues:**
-- **"Fake Coin not created"** → Check console for creation errors
+- **"Toss a Coin to Your Pirate not created"** → Check console for creation errors
 - **"Reward not detected"** → Verify reward exists in Twitch dashboard
 - **"Animation not working"** → Use test button to verify coin display
 
 ### **Common Console Logs:**
 ```
-✅ Fake Coin reward created successfully
+✅ Toss a Coin to Your Pirate reward created successfully
 🔌 Connected to Twitch EventSub WebSocket
 🎫 Session ID received
-✅ EventSub subscription created for Fake Coin detection
-🪙 FAKE COIN REDEMPTION DETECTED!
+✅ EventSub subscription created for reward detection
+🪙 TOSS A COIN TO YOUR PIRATE REDEMPTION DETECTED!
 👤 Redeemed by: [username]
 ```
 
@@ -105,7 +105,7 @@ Go to [Twitch Developer Console](https://dev.twitch.tv/console) and:
 
 ### **Reward Settings:**
 - **Cost**: 1 channel point (set in RewardCreator)
-- **Title**: "Fake Coin" (customizable in RewardCreator)
+- **Title**: "Toss a Coin to Your Pirate" (customizable in RewardCreator)
 - **Icons**: Uses `ac_28.png`, `ac_56.png`, `ac_112.png` from `/public/images/redemption_icons/`
 - **Background**: Yellow (#FFD54F)
 
@@ -149,7 +149,7 @@ https://api.twitch.tv/helix/channel_points/custom_rewards
 ## 🎯 **Success Indicators**
 
 When everything is working correctly, you should see:
-- ✅ **Fake Coin reward created** in console
+- ✅ **Toss a Coin to Your Pirate reward created** in console
 - ✅ **EventSub connected** with session ID
 - ✅ **Subscription created** successfully
 - ✅ **Test button works** - coin animation displays
