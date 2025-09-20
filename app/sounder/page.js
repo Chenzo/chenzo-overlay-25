@@ -26,6 +26,7 @@ export default function SoundBoard() {
         { id: 'chenzo', name: "Chenzo's Theme" },
         { id: 'chenzo_short', name: "Chenzo's Theme (short)" },
         { id: 'wood', name: 'Norwegian' },
+        { id: 'binobo_not_evil', name: 'Binobo Not Evil (short)' },
       ],
     },
     {
