@@ -113,6 +113,9 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
     } else if (audioName == 'bbetty2') {
       audioRef.current.src = `${BUCKET_URL}/audio/Black-Betty-Rambalam.mp3`;
       audioRef.current.volume = 0.7;
+    } else if (audioName == 'binobo_not_evil') {
+      audioRef.current.src = `${BUCKET_URL}/audio/Binobo-hes_not_really_evil.mp3`;
+      audioRef.current.volume = 0.6;
     } else if (audioName == 'scratch') {
       audioRef.current.src = `${BUCKET_URL}/audio/scratch.mp3`;
       audioRef.current.volume = 0.7;
