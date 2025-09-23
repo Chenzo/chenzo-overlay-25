@@ -5,7 +5,7 @@ import styles from './FloatingAlert.module.scss';
 const BUCKET_URL = process.env.NEXT_PUBLIC_BUCKET_URL;
 
 
-export default function FloatingAlert({overlayToggle}) {
+export default function FloatingAlert({ overlayToggle }) {
 
     const [showAFK, setShowAFK] = useState(false);
     const [videoSRC, setVideoSRC] = useState('');
@@ -42,6 +42,6 @@ export default function FloatingAlert({overlayToggle}) {
 
     return null; // Don't render anything if showAFK is true
 
-    
+
 }
 
