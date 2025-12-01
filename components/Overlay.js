@@ -17,6 +17,7 @@ import AncientCoin from './AncientCoin';
 import TestCoinButton from './TestCoinButton';
 import RewardCreator from './RewardCreator';
 import EventSubHandler from './EventSubHandler';
+import CameraHolder from './CameraHolder';
 
 export default function Overlay({}) {
   const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
@@ -26,7 +27,7 @@ export default function Overlay({}) {
   const [pushedImage, setPushedImage] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(true);
-  /* const [overlayToggle, setOverlayToggle] = useState(''); */
+  const [overlayToggle, setOverlayToggle] = useState(''); // Possible values: '', 'afk', 'whiskey', 'family'
   const [streamDescription, setStreamDescription] = useState(
     `The crew of the Holy Bartender has set sail again on The Sea of Thieves! There's a stream! Come watch along https://www.twitch.tv/chenzorama`
   );
@@ -78,7 +79,7 @@ export default function Overlay({}) {
           setCurrentAudio(data.theTarget);
         } else if (data?.theEvent == 'overlayToggle') {
           console.log(`data?.theEvent: ${data.theTarget}`);
-          //setOverlayToggle(data.theTarget);
+          setOverlayToggle(data.theTarget); // Possible values: '', 'afk', 'whiskey', 'family'
         } else if (
           data?.theEvent == 'shipsunk' ||
           data?.theEvent == 'shipresunk' ||
@@ -340,6 +341,7 @@ export default function Overlay({}) {
     <section className={styles.overlay}>
       <Header alignment={alignment} />
 
+      <CameraHolder afkType={overlayToggle} />
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
