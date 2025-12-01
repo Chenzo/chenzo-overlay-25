@@ -8,7 +8,7 @@ const BUCKET_URL = process.env.NEXT_PUBLIC_BUCKET_URL;
 export default function FloatingAlert({ overlayToggle }) {
 
     const [showAFK, setShowAFK] = useState(false);
-    const [videoSRC, setVideoSRC] = useState('');
+    const [videoSRC, setVideoSRC] = useState(null);
 
     useEffect(() => {
         //console.log('overlayToggle:', overlayToggle);
