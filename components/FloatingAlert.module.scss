@@ -1,31 +1,23 @@
 @import '/styles/_variables';
 
 
-
 .floatingAlert {
     .videoHolder {
         position: absolute;
         z-index: 5;
         width: 465px;
         height: 300px;
-        //overflow: hidden;
         top: 20px;
         left: 20px;
     }
 
     .video {
-        //position: absolute;
-        //z-index: 4;
-       // top: 0px;
         height: 100%;
-        //left: -280px;
-        //width: 875px;
     }
 
     .border {
         position: absolute;
         z-index: 10;
-
     }
 }
 
@@ -33,19 +25,5 @@
     position: relative;
     width: 100vw;
     height: 100vh;
-    /* right: -20px;
-    bottom: 20px; */
 
-    /* .border {
-        position: absolute;
-        z-index: 10;
-        right: -10px;
-        bottom: 85px;
-
-        img {
-            width: 500px;
-        }
-    } */
-
-    
 }

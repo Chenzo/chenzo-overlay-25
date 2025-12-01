@@ -12,7 +12,6 @@ import Sunks from './Sunks';
 import DiscordImage from './DiscordImage';
 import LoginButton from './LoginButton';
 import LogOutButton from './LogOutButton';
-/* import FloatingAlert from './FloatingAlert'; */
 import AncientCoin from './AncientCoin';
 import TestCoinButton from './TestCoinButton';
 import RewardCreator from './RewardCreator';
@@ -345,7 +344,6 @@ export default function Overlay({ }) {
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
-      {/* <FloatingAlert overlayToggle={overlayToggle} setOverlayToggle={setOverlayToggle} /> */}
       <Footer loggedIn={loggedIn} onCoinRewardRedeemed={handleCoinRewardRedeemed} />
       <AncientCoin showCoin={showCoin} onCoinHidden={handleCoinHidden} />
       <TestCoinButton onTestCoin={handleCoinRewardRedeemed} />
