@@ -19,7 +19,7 @@ import RewardCreator from './RewardCreator';
 import EventSubHandler from './EventSubHandler';
 import CameraHolder from './CameraHolder';
 
-export default function Overlay({}) {
+export default function Overlay({ }) {
   const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
   const [alignment, setAlignment] = useState(50);
   const [currentAudio, setCurrentAudio] = useState('');
@@ -27,7 +27,7 @@ export default function Overlay({}) {
   const [pushedImage, setPushedImage] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(true);
-  const [overlayToggle, setOverlayToggle] = useState(''); // Possible values: '', 'afk', 'whiskey', 'family'
+  const [overlayToggle, setOverlayToggle] = useState(null); // Possible values: '', 'afk', 'whiskey', 'family'
   const [streamDescription, setStreamDescription] = useState(
     `The crew of the Holy Bartender has set sail again on The Sea of Thieves! There's a stream! Come watch along https://www.twitch.tv/chenzorama`
   );

@@ -9,15 +9,22 @@ export default function CameraHolder({ afkType }) {
   const videoRef = useRef(null);
   const [error, setError] = useState('');
   const [isStarting, setIsStarting] = useState(true);
-  const [videoSRC, setVideoSRC] = useState(afkType);
+  const [videoSRC, setVideoSRC] = useState(null);
 
   useEffect(() => {
+    console.log('afk source');
+    console.log(afkType);
+
     if (afkType === 'afk') {
+      console.log('AFK');
       setVideoSRC(`${BUCKET_URL}/video/hoggle_peeing-small.mp4`);
     } else if (afkType === 'whiskey') {
       setVideoSRC(`${BUCKET_URL}/video/whiskey_1.mp4`);
     } else if (afkType === 'family') {
+      console.log('familysounded');
       setVideoSRC(`${BUCKET_URL}/video/family.mp4`);
+    } else {
+      setVideoSRC(null);
     }
   }, [afkType]);
 
@@ -54,12 +61,12 @@ export default function CameraHolder({ afkType }) {
   return (
     <div className={styles.cameraHolder}>
       <div className={styles.frame}>
-        {afkType && (
+        {videoSRC && (
           <video autoPlay muted loop className={styles.video}>
             <source src={videoSRC} type='video/mp4' />
           </video>
         )}
-        {!afkType && <video ref={videoRef} muted playsInline autoPlay className={styles.video} />}
+        <video ref={videoRef} muted playsInline autoPlay className={`${videoSRC ? styles.hide : ''} ${styles.video}`} />
       </div>
       {isStarting && !error && <span className={styles.status}>Starting camera…</span>}
       {error && <span className={styles.error}>{error}</span>}
