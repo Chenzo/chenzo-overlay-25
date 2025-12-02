@@ -9,7 +9,7 @@ export default function CameraHolder({ afkType }) {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
   const [error, setError] = useState('');
-  const [isStarting, setIsStarting] = useState(true);
+  const [isStarting, setIsStarting] = useState(false);
   const [videoSRC, setVideoSRC] = useState(null);
   const [devices, setDevices] = useState([]);
   const [deviceError, setDeviceError] = useState('');
@@ -37,8 +37,6 @@ export default function CameraHolder({ afkType }) {
   //const [afkType, setAfkType] = useState(''); // Possible values: '', 'afk', 'whiskey', 'family'
 
   useEffect(() => {
-    startCamera();
-
     return () => stopStream();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -51,13 +49,18 @@ export default function CameraHolder({ afkType }) {
   };
 
   const startCamera = async (deviceId) => {
+    if (!deviceId) {
+      setError('Please select a camera.');
+      return;
+    }
+
     setIsStarting(true);
     setError('');
     stopStream();
 
     try {
       const constraints = {
-        video: deviceId ? { deviceId: { exact: deviceId } } : true,
+        video: { deviceId: { exact: deviceId } },
         audio: false,
       };
 
@@ -108,6 +111,7 @@ export default function CameraHolder({ afkType }) {
 
   const handleSelectDevice = (deviceId) => {
     setSelectedDeviceId(deviceId);
+    setError('');
     startCamera(deviceId);
     setShowDeviceList(false);
   };
