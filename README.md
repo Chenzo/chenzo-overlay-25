@@ -24,3 +24,6 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 https://dev.twitch.tv/docs/api/reference/#get-eventsub-subscriptions
 
+
+Target: 
+"E:\Program Files\obs-studio\bin\64bit\obs64.exe" --enable-gpu --use-fake-ui-for-media-stream
