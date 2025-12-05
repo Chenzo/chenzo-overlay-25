@@ -13,16 +13,16 @@ export default function AncientCoin({ showCoin, onCoinHidden }) {
       setRandomPosition(newPosition);
       setIsVisible(true);
 
-              // Play coin sound
-        try {
-          const audio = new Audio('/audio/coin.mp3');
-          audio.volume = 0.5; // Set volume to 50%
-          audio.play().catch(error => {
-            console.log('Could not play coin sound:', error);
-          });
-        } catch (error) {
-          console.log('Error creating audio element:', error);
-        }
+      // Play coin sound
+      try {
+        const audio = new Audio('/audio/coin.mp3');
+        audio.volume = 0.5; // Set volume to 50%
+        audio.play().catch((error) => {
+          console.log('Could not play coin sound:', error);
+        });
+      } catch (error) {
+        console.log('Error creating audio element:', error);
+      }
 
       // Hide the coin after 3 seconds
       const timer = setTimeout(() => {
