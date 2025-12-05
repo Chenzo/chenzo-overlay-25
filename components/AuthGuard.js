@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -15,21 +16,22 @@ export default function AuthGuard({ children }) {
   useEffect(() => {
     const checkAuth = async () => {
       const accessToken = localStorage.getItem('twitchAccessToken');
-      
+
       if (accessToken) {
         setIsAuthenticated(true);
-        
+
         // Fetch user data from Twitch API
         try {
           const response = await fetch('https://api.twitch.tv/helix/users', {
             headers: {
-              'Authorization': `Bearer ${accessToken}`,
+              Authorization: `Bearer ${accessToken}`,
               'Client-Id': process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
             },
           });
 
           if (response.ok) {
             const data = await response.json();
+
             if (data.data && data.data.length > 0) {
               const user = data.data[0];
               const userInfo = {
@@ -39,7 +41,7 @@ export default function AuthGuard({ children }) {
                 avatarUrl: user.profile_image_url,
               };
               setUserData(userInfo);
-              
+
               // Check user access level
               const accessLevel = getUserAccessLevel(user.login);
               setUserAccessLevel(accessLevel);
@@ -53,7 +55,7 @@ export default function AuthGuard({ children }) {
         setUserData(null);
         setUserAccessLevel(null);
       }
-      
+
       setIsLoading(false);
     };
 
@@ -74,14 +76,14 @@ export default function AuthGuard({ children }) {
     localStorage.removeItem('twitchAccessToken');
     localStorage.removeItem('twitch_user_id');
     localStorage.removeItem('twitch_username');
-    
+
     // Clear any other potential Twitch data
-    Object.keys(localStorage).forEach(key => {
+    Object.keys(localStorage).forEach((key) => {
       if (key.includes('twitch') || key.includes('Twitch')) {
         localStorage.removeItem(key);
       }
     });
-    
+
     setIsAuthenticated(false);
     setUserData(null);
     setUserAccessLevel(null);
@@ -106,15 +108,17 @@ export default function AuthGuard({ children }) {
 
   if (isLoading) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh',
-        background: '#444',
-        color: '#fff',
-        fontSize: '18px'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          background: '#444',
+          color: '#fff',
+          fontSize: '18px',
+        }}
+      >
         Checking authentication...
       </div>
     );
@@ -122,16 +126,18 @@ export default function AuthGuard({ children }) {
 
   if (!isAuthenticated) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        flexDirection: 'column',
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh',
-        background: '#444',
-        color: '#fff',
-        gap: '20px'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          background: '#444',
+          color: '#fff',
+          gap: '20px',
+        }}
+      >
         <h1>Access Restricted</h1>
         <p>You need to be logged into Twitch to access this page.</p>
         <button onClick={handleLogin}>LOG INTO TWITCH</button>
@@ -142,16 +148,18 @@ export default function AuthGuard({ children }) {
   // Check if user has access to sounder page (level 0 or 1)
   if (window.location.pathname === '/sounder' && userAccessLevel !== null && userAccessLevel > 1) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        flexDirection: 'column',
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh',
-        background: '#444',
-        color: '#fff',
-        gap: '20px'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          background: '#444',
+          color: '#fff',
+          gap: '20px',
+        }}
+      >
         <h1>Access Denied</h1>
         <p>Contact chenzo for access</p>
         <LogOutButton setLoggedIn={setIsAuthenticated} redirectTo={window.location.pathname} />
@@ -161,45 +169,39 @@ export default function AuthGuard({ children }) {
 
   return (
     <div>
-      <div style={{
-        position: 'fixed',
-        top: '10px',
-        right: '10px',
-        zIndex: 1000,
-        background: '#333',
-        padding: '15px',
-        borderRadius: '8px',
-        border: '1px solid #555',
-        minWidth: '200px'
-      }}>
+      <div
+        style={{
+          position: 'fixed',
+          top: '10px',
+          right: '10px',
+          zIndex: 1000,
+          background: '#333',
+          padding: '15px',
+          borderRadius: '8px',
+          border: '1px solid #555',
+          minWidth: '200px',
+        }}
+      >
         {userData ? (
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px', gap: '10px' }}>
-            <img 
-              src={userData.avatarUrl} 
+            <img
+              src={userData.avatarUrl}
               alt={userData.displayName}
               style={{
                 width: '40px',
                 height: '40px',
                 borderRadius: '50%',
-                border: '2px solid #555'
+                border: '2px solid #555',
               }}
             />
             <div>
-              <div style={{ fontSize: '14px', color: '#fff', fontWeight: 'bold' }}>
-                {userData.displayName}
-              </div>
-              <div style={{ fontSize: '12px', color: '#ccc' }}>
-                @{userData.username}
-              </div>
-              <div style={{ fontSize: '10px', color: '#888' }}>
-                Level {userAccessLevel}
-              </div>
+              <div style={{ fontSize: '14px', color: '#fff', fontWeight: 'bold' }}>{userData.displayName}</div>
+              <div style={{ fontSize: '12px', color: '#ccc' }}>@{userData.username}</div>
+              <div style={{ fontSize: '10px', color: '#888' }}>Level {userAccessLevel}</div>
             </div>
           </div>
         ) : (
-          <div style={{ marginBottom: '15px', fontSize: '14px', color: '#ccc' }}>
-            Loading user data...
-          </div>
+          <div style={{ marginBottom: '15px', fontSize: '14px', color: '#ccc' }}>Loading user data...</div>
         )}
         <LogOutButton setLoggedIn={setIsAuthenticated} redirectTo={window.location.pathname} />
       </div>
