@@ -6,16 +6,16 @@ export default function LogOutButton({ setLoggedIn, redirectTo = '/' }) {
     localStorage.removeItem('twitchAccessToken');
     localStorage.removeItem('twitch_user_id');
     localStorage.removeItem('twitch_username');
-    
+
     // Clear any other potential Twitch data
-    Object.keys(localStorage).forEach(key => {
+    Object.keys(localStorage).forEach((key) => {
       if (key.includes('twitch') || key.includes('Twitch')) {
         localStorage.removeItem(key);
       }
     });
-    
+
     setLoggedIn(false);
-    
+
     // Force a complete page reload to clear any cached state
     window.location.href = redirectTo;
   };
