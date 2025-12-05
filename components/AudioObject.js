@@ -119,6 +119,18 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
     } else if (audioName == 'scratch') {
       audioRef.current.src = `${BUCKET_URL}/audio/scratch.mp3`;
       audioRef.current.volume = 0.7;
+    } else if (audioName == 'rl_short') {
+      audioRef.current.src = `${BUCKET_URL}/audio/rock_lobster_only.mp3`;
+      audioRef.current.volume = 0.7;
+    } else if (audioName == 'janet') {
+      audioRef.current.src = `${BUCKET_URL}/audio/janet.mp3`;
+      audioRef.current.volume = 1;
+    } else if (audioName == 'trap') {
+      audioRef.current.src = `${BUCKET_URL}/audio/trap.mp3`;
+      audioRef.current.volume = 0.7;
+    } else if (audioName == 'brave') {
+      audioRef.current.src = `${BUCKET_URL}/audio/brave_sir_robin_louder.mp3`;
+      audioRef.current.volume = 1;
     }
 
     audioRef.current.addEventListener('ended', function () {

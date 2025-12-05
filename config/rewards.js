@@ -43,7 +43,7 @@ export const rewards = [
       url_4x: 'https://chenzorama.com/overlay/twitch/redemption_icons/sail_112.png',
     },
     animation: {
-      type: 'sail-away',
+      type: 'audioonly',
       duration: 5000, // 5 seconds for the song
       audioObject: 'sailingaway', // Use AudioObject system instead of direct sound
     },
@@ -63,9 +63,49 @@ export const rewards = [
       url_4x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_112.png',
     },
     animation: {
-      type: 'they-did-it',
+      type: 'audioonly',
       duration: 5000, // 5 seconds for the song
       audioObject: 'dora', // Use AudioObject system to play dora.mp3
+    },
+  },
+  {
+    id: 'sir_robin',
+    title: 'Brave Sir Robin',
+    cost: 1000,
+    prompt: 'Brave Brave Sir Robin Bravely Ran Away!',
+    is_enabled: true,
+    is_user_input_required: false,
+    background_color: '#fefe14',
+    should_redemptions_skip_request_queue: true,
+    default_image: {
+      url_1x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_28.png',
+      url_2x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_56.png',
+      url_4x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_112.png',
+    },
+    animation: {
+      type: 'audioonly',
+      duration: 5000, // 5 seconds for the song
+      audioObject: 'brave', // Use AudioObject system to play dora.mp3
+    },
+  },
+  {
+    id: 'its-a-trap',
+    title: "It's a Trap",
+    cost: 100,
+    prompt: 'Akbar was right!',
+    is_enabled: true,
+    is_user_input_required: false,
+    background_color: '#3314fe',
+    should_redemptions_skip_request_queue: true,
+    default_image: {
+      url_1x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_28.png',
+      url_2x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_56.png',
+      url_4x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_112.png',
+    },
+    animation: {
+      type: 'audioonly',
+      duration: 5000, // 5 seconds for the song
+      audioObject: 'trap', // Use AudioObject system to play trap.mp3
     },
   },
   // Add more rewards here:

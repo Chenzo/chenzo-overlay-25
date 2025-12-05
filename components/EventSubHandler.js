@@ -68,11 +68,8 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
               // Handle different animation types
               if (matchedReward.animation.type === 'ancient-coin') {
                 onCoinRewardRedeemed(); // This triggers the AncientCoin component (which handles its own audio)
-              } else if (matchedReward.animation.type === 'sail-away' && matchedReward.animation.audioObject) {
-                console.log(`🎵 Playing AudioObject: ${matchedReward.animation.audioObject}`);
-                setCurrentAudio(matchedReward.animation.audioObject);
-              } else if (matchedReward.animation.type === 'they-did-it' && matchedReward.animation.audioObject) {
-                console.log(`🎵 Playing AudioObject: ${matchedReward.animation.audioObject}`);
+              } else if (matchedReward.animation.type === 'audioonly' && matchedReward.animation.audioObject) {
+                console.log(`-- Playing AudioObject: ${matchedReward.animation.audioObject}`);
                 setCurrentAudio(matchedReward.animation.audioObject);
               }
             }

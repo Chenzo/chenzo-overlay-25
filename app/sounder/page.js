@@ -10,11 +10,20 @@ export default function SoundBoard() {
     {
       name: 'New',
       sounds: [
+        { id: 'brave', name: 'Brave Sir Robin' },
         { id: 'dora', name: "Dora's Sandwich" },
         { id: 'rocklobster', name: 'Rock Lobster' },
         { id: 'sailingaway', name: 'Sailing Away' },
         { id: 'bbetty1', name: 'Black Betty Intro' },
         { id: 'bbetty2', name: 'Black Betty Rambalam' },
+      ],
+    },
+    {
+      name: 'Short',
+      sounds: [
+        { id: 'janet', name: 'Janet' },
+        { id: 'trap', name: 'Trap' },
+        { id: 'rl_short', name: 'Rock Lobster (short)' },
       ],
     },
     {

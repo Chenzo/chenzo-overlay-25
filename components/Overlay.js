@@ -18,7 +18,7 @@ import RewardCreator from './RewardCreator';
 import EventSubHandler from './EventSubHandler';
 import CameraHolder from './CameraHolder';
 
-export default function Overlay({ }) {
+export default function Overlay({}) {
   const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
   const [alignment, setAlignment] = useState(50);
   const [currentAudio, setCurrentAudio] = useState('');
