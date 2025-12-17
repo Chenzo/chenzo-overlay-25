@@ -38,6 +38,7 @@ export default function Overlay({}) {
 
   const [isLive, setIsLive] = useState(false);
   const [showCoin, setShowCoin] = useState(false);
+  const [showBartender, setShowBartender] = useState(false);
 
   /* const listenToSoundBoard = () => {
     console.log('Listening to sound board events...');
@@ -79,6 +80,8 @@ export default function Overlay({}) {
         } else if (data?.theEvent == 'overlayToggle') {
           console.log(`data?.theEvent: ${data.theTarget}`);
           setOverlayToggle(data.theTarget); // Possible values: '', 'afk', 'whiskey', 'family'
+        } else if (data?.theEvent == 'showBartender') {
+          setShowBartender(data?.theEvent === 'true' ? true : false);
         } else if (
           data?.theEvent == 'shipsunk' ||
           data?.theEvent == 'shipresunk' ||
@@ -338,13 +341,13 @@ export default function Overlay({}) {
 
   return (
     <section className={styles.overlay}>
-      <Header alignment={alignment} />
+      {showBartender && <Header alignment={alignment} />}
 
       <CameraHolder afkType={overlayToggle} />
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
-      <Footer loggedIn={loggedIn} onCoinRewardRedeemed={handleCoinRewardRedeemed} />
+      {showBartender && <Footer loggedIn={loggedIn} />}
       <AncientCoin showCoin={showCoin} onCoinHidden={handleCoinHidden} />
       <TestCoinButton onTestCoin={handleCoinRewardRedeemed} />
       <RewardCreator />
