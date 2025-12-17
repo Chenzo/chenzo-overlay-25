@@ -91,7 +91,7 @@ export default function TestCoinButton({ onTestCoin }) {
   }
 
   return (
-    <div style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 1001 }}>
+    <div style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 2000 }}>
       <button
         onClick={handleTestClick}
         style={{

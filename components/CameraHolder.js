@@ -16,6 +16,22 @@ export default function CameraHolder({ afkType }) {
   const [isListingDevices, setIsListingDevices] = useState(false);
   const [selectedDeviceId, setSelectedDeviceId] = useState('');
   const [showDeviceList, setShowDeviceList] = useState(false);
+  const holderRef = useRef(null);
+
+  const getDefaultPosition = () => {
+    if (typeof window === 'undefined') return { x: 20, y: 20 };
+    const defaultWidth = 320;
+    const defaultHeight = 180; // 16:9 aspect with width 320
+    return {
+      x: Math.max(10, window.innerWidth - defaultWidth - 20),
+      y: Math.max(10, window.innerHeight - defaultHeight - 70),
+    };
+  };
+
+  const [position, setPosition] = useState(getDefaultPosition);
+  const dragOffsetRef = useRef({ x: 0, y: 0 });
+  const isDraggingRef = useRef(false);
+  const [hasDragged, setHasDragged] = useState(false);
 
   useEffect(() => {
     console.log('afk source');
@@ -38,7 +54,50 @@ export default function CameraHolder({ afkType }) {
 
   useEffect(() => {
     return () => stopStream();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const setDefaultPosition = () => {
+      const holder = holderRef.current;
+      const width = holder?.offsetWidth || 320;
+      const height = holder?.offsetHeight || 180;
+      const x = Math.max(10, window.innerWidth - width - 20);
+      const y = Math.max(10, window.innerHeight - height - 70);
+      setPosition({ x, y });
+    };
+
+    setDefaultPosition();
+    window.addEventListener('resize', setDefaultPosition);
+    return () => window.removeEventListener('resize', setDefaultPosition);
+  }, []);
+
+  useEffect(() => {
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+    const handleMouseMove = (e) => {
+      if (!isDraggingRef.current) return;
+      e.preventDefault();
+
+      const holder = holderRef.current;
+      const width = holder?.offsetWidth || 320;
+      const height = holder?.offsetHeight || 200;
+      const nextX = clamp(e.clientX - dragOffsetRef.current.x, 0, Math.max(0, window.innerWidth - width));
+      const nextY = clamp(e.clientY - dragOffsetRef.current.y, 0, Math.max(0, window.innerHeight - height));
+      setPosition({ x: nextX, y: nextY });
+      setHasDragged(true);
+    };
+
+    const handleMouseUp = () => {
+      isDraggingRef.current = false;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
   }, []);
 
   const stopStream = () => {
@@ -116,24 +175,31 @@ export default function CameraHolder({ afkType }) {
     setShowDeviceList(false);
   };
 
+  const handleDragStart = (e) => {
+    isDraggingRef.current = true;
+    dragOffsetRef.current = {
+      x: e.clientX - position.x,
+      y: e.clientY - position.y,
+    };
+    setHasDragged(false);
+  };
+
+  const handleFrameClick = () => {
+    if (hasDragged) {
+      setHasDragged(false);
+      return;
+    }
+
+    handleListDevices();
+  };
+
   return (
-    <div className={styles.cameraHolder}>
-      <div
-        className={styles.frame}
-        onClick={handleListDevices}
-        role='button'
-        tabIndex={0}
-        onKeyDown={(e) => (e.key === 'Enter' ? handleListDevices() : null)}
-      >
-        {videoSRC && (
-          <video autoPlay muted loop className={styles.video}>
-            <source src={videoSRC} type='video/mp4' />
-          </video>
-        )}
-        <video ref={videoRef} muted playsInline autoPlay className={`${videoSRC ? styles.hide : ''} ${styles.video}`} />
-      </div>
-      {isStarting && !error && <span className={styles.status}>Starting camera…</span>}
-      {error && <span className={styles.error}>{error}</span>}
+    <div
+      className={styles.cameraHolder}
+      ref={holderRef}
+      style={{ top: position.y, left: position.x }}
+      onMouseDown={handleDragStart}
+    >
       {!error && (
         <div className={styles.deviceSection}>
           {isListingDevices && <span className={styles.status}>Listing devices…</span>}
@@ -158,6 +224,22 @@ export default function CameraHolder({ afkType }) {
           )}
         </div>
       )}
+      <div
+        className={styles.frame}
+        onClick={handleFrameClick}
+        role='button'
+        tabIndex={0}
+        onKeyDown={(e) => (e.key === 'Enter' ? handleListDevices() : null)}
+      >
+        {videoSRC && (
+          <video autoPlay muted loop className={styles.video}>
+            <source src={videoSRC} type='video/mp4' />
+          </video>
+        )}
+        <video ref={videoRef} muted playsInline autoPlay className={`${videoSRC ? styles.hide : ''} ${styles.video}`} />
+      </div>
+      {isStarting && !error && <span className={styles.status}>Starting camera…</span>}
+      {error && <span className={styles.error}>{error}</span>}
     </div>
   );
 }
