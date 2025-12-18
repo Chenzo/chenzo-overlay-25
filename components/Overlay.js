@@ -34,30 +34,9 @@ export default function Overlay({ }) {
   const isDevelopment = false; // = process.env.NODE_ENV === 'development';
   console.log('isDevelopment:', isDevelopment);
 
-  //const [status, setStatus] = useState('Checking...');
-
   const [isLive, setIsLive] = useState(false);
   const [showCoin, setShowCoin] = useState(false);
   const [showBartender, setShowBartender] = useState(true);
-
-  /* const listenToSoundBoard = () => {
-    console.log('Listening to sound board events...');
-    const eventSource = new EventSource('/api/serverEvents');
-
-    eventSource.onmessage = (event) => {
-      console.log('New event:', event.data);
-      // Handle the event (update UI, play sound, etc.)
-      console.log(`play audio: ${data.theTarget}`);
-      setCurrentAudio(data.theTarget);
-    };
-
-    eventSource.onerror = (err) => {
-      console.error('EventSource failed:', err);
-      eventSource.close();
-    };
-
-    return eventSource;
-  }; */
 
   const listenToServer = () => {
     console.log('Listening to server...');
