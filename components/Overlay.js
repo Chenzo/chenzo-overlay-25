@@ -18,7 +18,7 @@ import RewardCreator from './RewardCreator';
 import EventSubHandler from './EventSubHandler';
 import CameraHolder from './CameraHolder';
 
-export default function Overlay({}) {
+export default function Overlay({ }) {
   const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
   const [alignment, setAlignment] = useState(50);
   const [currentAudio, setCurrentAudio] = useState('');
@@ -38,7 +38,7 @@ export default function Overlay({}) {
 
   const [isLive, setIsLive] = useState(false);
   const [showCoin, setShowCoin] = useState(false);
-  const [showBartender, setShowBartender] = useState(false);
+  const [showBartender, setShowBartender] = useState(true);
 
   /* const listenToSoundBoard = () => {
     console.log('Listening to sound board events...');
@@ -81,7 +81,7 @@ export default function Overlay({}) {
           console.log(`data?.theEvent: ${data.theTarget}`);
           setOverlayToggle(data.theTarget); // Possible values: '', 'afk', 'whiskey', 'family'
         } else if (data?.theEvent == 'showBartender') {
-          setShowBartender(data?.theEvent === 'true' ? true : false);
+          setShowBartender(data?.theTarget === 'true' ? true : false);
         } else if (
           data?.theEvent == 'shipsunk' ||
           data?.theEvent == 'shipresunk' ||
