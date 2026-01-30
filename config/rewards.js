@@ -108,6 +108,46 @@ export const rewards = [
       audioObject: 'trap', // Use AudioObject system to play trap.mp3
     },
   },
+  {
+    id: 'pricefail',
+    title: 'The Price is WRONG',
+    cost: 100,
+    prompt: 'fail',
+    is_enabled: true,
+    is_user_input_required: false,
+    background_color: '#FF6B6B',
+    should_redemptions_skip_request_queue: true,
+    default_image: {
+      url_1x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_28.png',
+      url_2x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_56.png',
+      url_4x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_112.png',
+    },
+    animation: {
+      type: 'audioonly',
+      duration: 5000,
+      audioObject: 'pricefail',
+    },
+  },
+  {
+    id: 'mbrothers',
+    title: 'Mailed it to the Marx Brothers',
+    cost: 500,
+    prompt: 'Now Hold On A Minute',
+    is_enabled: true,
+    is_user_input_required: false,
+    background_color: '#333333',
+    should_redemptions_skip_request_queue: true,
+    default_image: {
+      url_1x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_28.png',
+      url_2x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_56.png',
+      url_4x: 'https://chenzorama.com/overlay/twitch/redemption_icons/celebration_112.png',
+    },
+    animation: {
+      type: 'audioonly',
+      duration: 5000,
+      audioObject: 'mbrothers',
+    },
+  },
   // Add more rewards here:
   // {
   //   id: 'another-reward',
