@@ -131,6 +131,12 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
     } else if (audioName == 'brave') {
       audioRef.current.src = `${BUCKET_URL}/audio/brave_sir_robin_louder.mp3`;
       audioRef.current.volume = 1;
+    } else if (audioName == 'pricefail') {
+      audioRef.current.src = `${BUCKET_URL}/audio/price-fail.mp3`;
+      audioRef.current.volume = 1;
+    } else if (audioName == 'mbrothers') {
+      audioRef.current.src = `${BUCKET_URL}/audio/mbrothers.mp3`;
+      audioRef.current.volume = 1;
     }
 
     audioRef.current.addEventListener('ended', function () {
