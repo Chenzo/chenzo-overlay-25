@@ -31,6 +31,8 @@ export default function SoundBoard() {
     {
       name: 'Pirates',
       sounds: [
+        { id: 'binobo_song_1', name: "Binobo's Theme" },
+        { id: 'binobo_song_2', name: "Binobo's Theme (alternate)" },
         { id: 'peoples_song', name: "People's Song" },
         { id: 'peoples_song_short', name: "Peoples' Song (short)" },
         { id: 'hero', name: 'Greatest American Hero' },
