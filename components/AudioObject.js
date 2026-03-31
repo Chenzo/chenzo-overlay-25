@@ -137,6 +137,12 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
     } else if (audioName == 'mbrothers') {
       audioRef.current.src = `${BUCKET_URL}/audio/mbrothers.mp3`;
       audioRef.current.volume = 1;
+    } else if (audioName == 'binobo_song_1') {
+      audioRef.current.src = `${BUCKET_URL}/audio/EvilBinoboSong-1.mp3`;
+      audioRef.current.volume = 0.6;
+    } else if (audioName == 'binobo_song_2') {
+      audioRef.current.src = `${BUCKET_URL}/audio/EvilBinoboSong-2.mp3`;
+      audioRef.current.volume = 0.6;
     }
 
     audioRef.current.addEventListener('ended', function () {
