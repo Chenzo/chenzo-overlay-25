@@ -11,6 +11,7 @@ export default function SoundBoard() {
       name: 'New',
       sounds: [
         { id: 'pricefail', name: 'Price is Right Fail' },
+        { id: 'dicks', name: 'Dicks Dicks Dicks' },
         { id: 'mbrothers', name: 'Marx Brothers' },
         { id: 'brave', name: 'Brave Sir Robin' },
         { id: 'dora', name: "Dora's Sandwich" },
