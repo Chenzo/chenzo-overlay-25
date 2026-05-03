@@ -17,6 +17,7 @@ import TestCoinButton from './TestCoinButton';
 import RewardCreator from './RewardCreator';
 import EventSubHandler from './EventSubHandler';
 import CameraHolder from './CameraHolder';
+import Listener from './Listener';
 
 export default function Overlay({}) {
   const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
@@ -322,6 +323,7 @@ export default function Overlay({}) {
     <section className={styles.overlay}>
       {showBartender && <Header alignment={alignment} />}
 
+      <Listener />
       <CameraHolder afkType={overlayToggle} />
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <Sunks sunkShipArray={sunkShipArray} />
