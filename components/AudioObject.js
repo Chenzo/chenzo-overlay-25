@@ -49,7 +49,7 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
       audioRef.current.volume = 0.7;
     } else if (audioName == 'fire') {
       audioRef.current.src = `${BUCKET_URL}/audio/fire.mp3`;
-      audioRef.current.volume = 0.3;
+      audioRef.current.volume = 0.6;
     } else if (audioName == 'sosalty') {
       audioRef.current.src = `${BUCKET_URL}/audio/sosalty.mp3`;
       audioRef.current.volume = 0.2;
@@ -94,19 +94,19 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
       audioRef.current.volume = 0.3;
     } else if (audioName == 'peoples_song') {
       audioRef.current.src = `${BUCKET_URL}/audio/peoples_song.mp3`;
-      audioRef.current.volume = 0.7;
+      audioRef.current.volume = 1;
     } else if (audioName == 'peoples_song_short') {
       audioRef.current.src = `${BUCKET_URL}/audio/peoples_song_short.mp3`;
-      audioRef.current.volume = 0.6;
+      audioRef.current.volume = 1;
     } else if (audioName == 'hero') {
       audioRef.current.src = `${BUCKET_URL}/audio/greatest_hero.mp3`;
-      audioRef.current.volume = 0.7;
+      audioRef.current.volume = 1;
     } else if (audioName == 'chenzo') {
       audioRef.current.src = `${BUCKET_URL}/audio/chenzo-shanty.mp3`;
-      audioRef.current.volume = 0.8;
+      audioRef.current.volume = 1;
     } else if (audioName == 'chenzo_short') {
       audioRef.current.src = `${BUCKET_URL}/audio/chenz-short.mp3`;
-      audioRef.current.volume = 0.6;
+      audioRef.current.volume = 1;
     } else if (audioName == 'bbetty1') {
       audioRef.current.src = `${BUCKET_URL}/audio/Black_Betty_Intro.mp3`;
       audioRef.current.volume = 0.7;
@@ -115,13 +115,13 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
       audioRef.current.volume = 0.7;
     } else if (audioName == 'binobo_not_evil') {
       audioRef.current.src = `${BUCKET_URL}/audio/Binobo-hes_not_really_evil.mp3`;
-      audioRef.current.volume = 0.8;
+      audioRef.current.volume = 1;
     } else if (audioName == 'scratch') {
       audioRef.current.src = `${BUCKET_URL}/audio/scratch.mp3`;
       audioRef.current.volume = 0.7;
     } else if (audioName == 'rl_short') {
       audioRef.current.src = `${BUCKET_URL}/audio/rock_lobster_only.mp3`;
-      audioRef.current.volume = 0.7;
+      audioRef.current.volume = 1;
     } else if (audioName == 'janet') {
       audioRef.current.src = `${BUCKET_URL}/audio/janet.mp3`;
       audioRef.current.volume = 1;
@@ -142,10 +142,10 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
       audioRef.current.volume = 1;
     } else if (audioName == 'binobo_song_1') {
       audioRef.current.src = `${BUCKET_URL}/audio/EvilBinoboSong-1.mp3`;
-      audioRef.current.volume = 0.9;
+      audioRef.current.volume = 1;
     } else if (audioName == 'binobo_song_2') {
       audioRef.current.src = `${BUCKET_URL}/audio/EvilBinoboSong-2.mp3`;
-      audioRef.current.volume = 0.9;
+      audioRef.current.volume = 1;
     }
 
     audioRef.current.addEventListener('ended', function () {
