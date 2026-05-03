@@ -322,7 +322,6 @@ export default function Overlay({}) {
   return (
     <section className={styles.overlay}>
       {showBartender && <Header alignment={alignment} />}
-
       <Listener setCurrentAudio={setCurrentAudio} />
       <CameraHolder afkType={overlayToggle} />
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
