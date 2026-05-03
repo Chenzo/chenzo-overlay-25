@@ -54,6 +54,7 @@ export default function SoundBoard() {
         { id: 'forgiveness', name: 'Forgiveness' },
         { id: 'scooty', name: 'Booty Scooty' },
         { id: 'wind', name: 'Against The Wind' },
+        { id: 'fire', name: 'Fire' },
         { id: 'warrenty', name: 'Warrenty' },
         { id: 'blastem', name: 'Blast Them!' },
       ],

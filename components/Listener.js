@@ -11,8 +11,14 @@ const KEYWORD_AUDIO_TRIGGERS = [
   { phrase: 'damn it', audio: 'janet' },
   { phrase: 'dammit', audio: 'janet' },
   { phrase: 'trap', audio: 'trap' },
+  { phrase: 'dicks', audio: 'dicks' },
+  { phrase: 'Marx Brothers', audio: 'mbrothers' },
+  { phrase: 'Marks Brothers', audio: 'mbrothers' },
+  { phrase: 'fire', audio: 'fire' },
+  { phrase: 'blast them', audio: 'blastem' },
 ];
-const POST_TRIGGER_PAUSE_MS = 6000;
+const POST_TRIGGER_PAUSE_MS = 5000;
+const TRANSCRIPT_CLEAR_DELAY_MS = 2500;
 
 export default function Listener({ setCurrentAudio }) {
   const audioContextRef = useRef(null);
@@ -20,6 +26,7 @@ export default function Listener({ setCurrentAudio }) {
   const animationFrameRef = useRef(null);
   const dataArrayRef = useRef(null);
   const pauseTimeoutRef = useRef(null);
+  const transcriptTimeoutRef = useRef(null);
   const recognitionRef = useRef(null);
   const restartRecognitionRef = useRef(false);
   const sourceRef = useRef(null);
@@ -36,9 +43,26 @@ export default function Listener({ setCurrentAudio }) {
   const [showDeviceList, setShowDeviceList] = useState(false);
   const [speechError, setSpeechError] = useState('');
   const [speechMatch, setSpeechMatch] = useState('');
+  const [speechEnabled, setSpeechEnabled] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(true);
   const [speechText, setSpeechText] = useState('Waiting for speech...');
   const [speechPaused, setSpeechPaused] = useState(false);
+  const hasSelectedDevice = selectedDeviceLabel !== '';
+  const isSpeechActive = speechEnabled && !speechPaused;
+  const micScale = isSpeechActive ? 1 + Math.min(levels.rms / 700, 0.55) : 1;
+  const micOpacity = isSpeechActive ? 0.55 + Math.min(levels.rms / 1000, 0.45) : 0.55;
+
+  const scheduleTranscriptClear = useCallback(() => {
+    if (transcriptTimeoutRef.current) {
+      clearTimeout(transcriptTimeoutRef.current);
+    }
+
+    transcriptTimeoutRef.current = setTimeout(() => {
+      transcriptTimeoutRef.current = null;
+      setSpeechText('');
+      setSpeechMatch('');
+    }, TRANSCRIPT_CLEAR_DELAY_MS);
+  }, []);
 
   const stopSpeechRecognition = useCallback(() => {
     restartRecognitionRef.current = false;
@@ -46,6 +70,11 @@ export default function Listener({ setCurrentAudio }) {
     if (pauseTimeoutRef.current) {
       clearTimeout(pauseTimeoutRef.current);
       pauseTimeoutRef.current = null;
+    }
+
+    if (transcriptTimeoutRef.current) {
+      clearTimeout(transcriptTimeoutRef.current);
+      transcriptTimeoutRef.current = null;
     }
 
     if (recognitionRef.current) {
@@ -61,6 +90,7 @@ export default function Listener({ setCurrentAudio }) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
+      setSpeechEnabled(false);
       setSpeechSupported(false);
       setSpeechError('Speech recognition is not supported in this browser.');
       setSpeechText('Speech unavailable');
@@ -92,17 +122,21 @@ export default function Listener({ setCurrentAudio }) {
       setSpeechText(transcript);
       setSpeechMatch(matchedTrigger?.phrase || '');
       setSpeechError('');
+      scheduleTranscriptClear();
 
       if (matchedTrigger) {
         stopSpeechRecognition();
         setCurrentAudio(matchedTrigger.audio);
         setSpeechPaused(true);
-        setSpeechText(`Paused after match: ${matchedTrigger.phrase}`);
+        setSpeechText('');
+        setSpeechMatch('');
 
         pauseTimeoutRef.current = setTimeout(() => {
           pauseTimeoutRef.current = null;
           setSpeechPaused(false);
-          startSpeechRecognition();
+          if (speechEnabled) {
+            startSpeechRecognition();
+          }
         }, POST_TRIGGER_PAUSE_MS);
       }
     };
@@ -127,8 +161,8 @@ export default function Listener({ setCurrentAudio }) {
     setSpeechError('');
     setSpeechMatch('');
     setSpeechPaused(false);
-    setSpeechText('Listening for words...');
-  }, [setCurrentAudio, stopSpeechRecognition]);
+    setSpeechText('');
+  }, [scheduleTranscriptClear, setCurrentAudio, speechEnabled, stopSpeechRecognition]);
 
   const stopAudioGraph = useCallback(() => {
     stopSpeechRecognition();
@@ -259,6 +293,7 @@ export default function Listener({ setCurrentAudio }) {
       setIsListening(true);
       setLevels(DEFAULT_LEVELS);
       setShowDeviceList(false);
+      setSpeechEnabled(true);
       startSpeechRecognition();
     } catch (startError) {
       console.error('Unable to start listener', startError);
@@ -322,6 +357,20 @@ export default function Listener({ setCurrentAudio }) {
     startListening(device.id, device.label);
   };
 
+  const handleToggleSpeech = () => {
+    if (speechEnabled || speechPaused) {
+      setSpeechEnabled(false);
+      setSpeechPaused(false);
+      setSpeechText('');
+      setSpeechMatch('');
+      stopSpeechRecognition();
+      return;
+    }
+
+    setSpeechEnabled(true);
+    startSpeechRecognition();
+  };
+
   useEffect(() => {
     return () => {
       stopAudioGraph();
@@ -329,64 +378,90 @@ export default function Listener({ setCurrentAudio }) {
   }, [stopAudioGraph]);
 
   return (
-    <aside className={styles.listener}>
-      <button
-        className={`${styles.panel} ${isListening ? styles.active : ''}`}
-        onClick={handleListDevices}
-        type='button'
-      >
-        <span className={styles.title}>Listener</span>
-        <span className={styles.source}>{selectedDeviceLabel || 'Select audio source'}</span>
-        <span className={styles.values}>
-          <span>
-            <strong>{levels.rms}</strong>
-            <small>rms</small>
-          </span>
-          <span>
-            <strong>{levels.peak}</strong>
-            <small>peak</small>
-          </span>
-          <span>
-            <strong>{levels.db}</strong>
-            <small>db</small>
-          </span>
-        </span>
-        <span className={styles.speechLine}>{speechText}</span>
-        <span className={`${styles.matchLine} ${speechMatch ? styles.matchActive : ''}`}>
-          {speechMatch ? `match: ${speechMatch}` : 'match: none'}
-        </span>
-      </button>
+    <>
+      {!hasSelectedDevice && (
+        <aside className={styles.listener}>
+          <button
+            className={`${styles.panel} ${isListening ? styles.active : ''}`}
+            onClick={handleListDevices}
+            type='button'
+          >
+            <span className={styles.title}>Listener</span>
+            <span className={styles.source}>Select audio source</span>
+            <span className={styles.values}>
+              <span>
+                <strong>{levels.rms}</strong>
+                <small>rms</small>
+              </span>
+              <span>
+                <strong>{levels.peak}</strong>
+                <small>peak</small>
+              </span>
+              <span>
+                <strong>{levels.db}</strong>
+                <small>db</small>
+              </span>
+            </span>
+          </button>
 
-      {(isListingDevices || deviceError || (devices.length > 0 && showDeviceList)) && (
-        <div className={styles.deviceSection}>
-          {isListingDevices && <span className={styles.status}>Listing audio sources...</span>}
-          {deviceError && <span className={styles.error}>{deviceError}</span>}
-          {devices.length > 0 && showDeviceList && (
-            <ul className={styles.deviceList}>
-              {devices.map((device) => (
-                <li key={device.key}>
-                  <button
-                    className={device.id === selectedDeviceId ? styles.selectedDevice : ''}
-                    onClick={() => handleSelectDevice(device)}
-                    type='button'
-                  >
-                    <span className={styles.deviceKind}>{device.kind}</span>
-                    <span className={styles.deviceLabel}>{device.label}</span>
-                    <span className={styles.deviceId}>{device.id}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
+          {(isListingDevices || deviceError || (devices.length > 0 && showDeviceList)) && (
+            <div className={styles.deviceSection}>
+              {isListingDevices && <span className={styles.status}>Listing audio sources...</span>}
+              {deviceError && <span className={styles.error}>{deviceError}</span>}
+              {devices.length > 0 && showDeviceList && (
+                <ul className={styles.deviceList}>
+                  {devices.map((device) => (
+                    <li key={device.key}>
+                      <button
+                        className={device.id === selectedDeviceId ? styles.selectedDevice : ''}
+                        onClick={() => handleSelectDevice(device)}
+                        type='button'
+                      >
+                        <span className={styles.deviceKind}>{device.kind}</span>
+                        <span className={styles.deviceLabel}>{device.label}</span>
+                        <span className={styles.deviceId}>{device.id}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           )}
-        </div>
+
+          {error && <span className={styles.error}>{error}</span>}
+        </aside>
       )}
 
-      {error && <span className={styles.error}>{error}</span>}
-      {!error && speechError && <span className={styles.error}>{speechError}</span>}
-      {!error && !speechError && !speechSupported && (
-        <span className={styles.status}>Speech recognition is unavailable in this browser.</span>
+      {hasSelectedDevice && (
+        <>
+          <button className={styles.micBadge} onClick={handleToggleSpeech} type='button'>
+            <div
+              className={`${styles.micIcon} ${isSpeechActive ? styles.micActive : ''} ${speechPaused ? styles.micPaused : ''}`}
+              style={{
+                opacity: micOpacity,
+                transform: `scale(${micScale})`,
+              }}
+            >
+              <svg className={styles.micGlyph} viewBox='0 0 24 24' aria-hidden='true'>
+                <path d='M12 15a4 4 0 0 0 4-4V7a4 4 0 1 0-8 0v4a4 4 0 0 0 4 4Z' />
+                <path d='M19 11a7 7 0 0 1-14 0' />
+                <path d='M12 18v3' />
+                <path d='M8 21h8' />
+              </svg>
+            </div>
+          </button>
+
+          <div className={styles.transcriptOverlay}>
+            <span className={styles.transcriptText}>{speechText}</span>
+          </div>
+
+          {error && <span className={`${styles.error} ${styles.overlayMessage}`}>{error}</span>}
+          {!error && speechError && <span className={`${styles.error} ${styles.overlayMessage}`}>{speechError}</span>}
+          {!error && !speechError && !speechSupported && (
+            <span className={`${styles.status} ${styles.overlayMessage}`}>Speech recognition is unavailable.</span>
+          )}
+        </>
       )}
-      {!error && !speechError && speechPaused && <span className={styles.status}>Speech paused for 6 seconds.</span>}
-    </aside>
+    </>
   );
 }
