@@ -76,6 +76,34 @@
   color: #a9c2d3;
 }
 
+.speechLine,
+.matchLine {
+  display: block;
+  min-height: 16px;
+  padding: 6px 8px;
+  font-size: 11px;
+  line-height: 1.35;
+  border-radius: 6px;
+}
+
+.speechLine {
+  color: #f3f8ff;
+  background: rgba(255, 255, 255, 0.08);
+  word-break: break-word;
+}
+
+.matchLine {
+  color: #b9cad8;
+  background: rgba(255, 255, 255, 0.05);
+  text-transform: lowercase;
+}
+
+.matchActive {
+  color: #0c2017;
+  background: #73f5b8;
+  font-weight: 700;
+}
+
 .deviceSection {
   width: 100%;
   margin-top: 6px;

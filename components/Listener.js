@@ -6,12 +6,22 @@ const DEFAULT_LEVELS = {
   peak: 0,
   db: -100,
 };
+const KEYWORD_AUDIO_TRIGGERS = [
+  { phrase: 'rock', audio: 'rl_short' },
+  { phrase: 'damn it', audio: 'janet' },
+  { phrase: 'dammit', audio: 'janet' },
+  { phrase: 'trap', audio: 'trap' },
+];
+const POST_TRIGGER_PAUSE_MS = 6000;
 
-export default function Listener() {
+export default function Listener({ setCurrentAudio }) {
   const audioContextRef = useRef(null);
   const analyserRef = useRef(null);
   const animationFrameRef = useRef(null);
   const dataArrayRef = useRef(null);
+  const pauseTimeoutRef = useRef(null);
+  const recognitionRef = useRef(null);
+  const restartRecognitionRef = useRef(false);
   const sourceRef = useRef(null);
   const streamRef = useRef(null);
   const lastLevelUpdateRef = useRef(0);
@@ -24,8 +34,105 @@ export default function Listener() {
   const [selectedDeviceId, setSelectedDeviceId] = useState('');
   const [selectedDeviceLabel, setSelectedDeviceLabel] = useState('');
   const [showDeviceList, setShowDeviceList] = useState(false);
+  const [speechError, setSpeechError] = useState('');
+  const [speechMatch, setSpeechMatch] = useState('');
+  const [speechSupported, setSpeechSupported] = useState(true);
+  const [speechText, setSpeechText] = useState('Waiting for speech...');
+  const [speechPaused, setSpeechPaused] = useState(false);
+
+  const stopSpeechRecognition = useCallback(() => {
+    restartRecognitionRef.current = false;
+
+    if (pauseTimeoutRef.current) {
+      clearTimeout(pauseTimeoutRef.current);
+      pauseTimeoutRef.current = null;
+    }
+
+    if (recognitionRef.current) {
+      recognitionRef.current.onend = null;
+      recognitionRef.current.onerror = null;
+      recognitionRef.current.onresult = null;
+      recognitionRef.current.stop();
+      recognitionRef.current = null;
+    }
+  }, []);
+
+  const startSpeechRecognition = useCallback(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      setSpeechSupported(false);
+      setSpeechError('Speech recognition is not supported in this browser.');
+      setSpeechText('Speech unavailable');
+      return;
+    }
+
+    stopSpeechRecognition();
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+    restartRecognitionRef.current = true;
+
+    recognition.onresult = (event) => {
+      let transcript = '';
+
+      for (let i = event.resultIndex; i < event.results.length; i += 1) {
+        transcript = `${transcript} ${event.results[i][0].transcript}`.trim();
+      }
+
+      if (!transcript) {
+        return;
+      }
+
+      const normalizedTranscript = transcript.toLowerCase();
+      const matchedTrigger = KEYWORD_AUDIO_TRIGGERS.find((trigger) => normalizedTranscript.includes(trigger.phrase));
+
+      setSpeechText(transcript);
+      setSpeechMatch(matchedTrigger?.phrase || '');
+      setSpeechError('');
+
+      if (matchedTrigger) {
+        stopSpeechRecognition();
+        setCurrentAudio(matchedTrigger.audio);
+        setSpeechPaused(true);
+        setSpeechText(`Paused after match: ${matchedTrigger.phrase}`);
+
+        pauseTimeoutRef.current = setTimeout(() => {
+          pauseTimeoutRef.current = null;
+          setSpeechPaused(false);
+          startSpeechRecognition();
+        }, POST_TRIGGER_PAUSE_MS);
+      }
+    };
+
+    recognition.onerror = (event) => {
+      if (event.error === 'no-speech') {
+        return;
+      }
+
+      setSpeechError(`Speech recognition error: ${event.error}`);
+    };
+
+    recognition.onend = () => {
+      if (restartRecognitionRef.current) {
+        recognition.start();
+      }
+    };
+
+    recognition.start();
+    recognitionRef.current = recognition;
+    setSpeechSupported(true);
+    setSpeechError('');
+    setSpeechMatch('');
+    setSpeechPaused(false);
+    setSpeechText('Listening for words...');
+  }, [setCurrentAudio, stopSpeechRecognition]);
 
   const stopAudioGraph = useCallback(() => {
+    stopSpeechRecognition();
+
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
       animationFrameRef.current = null;
@@ -54,7 +161,7 @@ export default function Listener() {
     }
 
     dataArrayRef.current = null;
-  }, []);
+  }, [stopSpeechRecognition]);
 
   const updateLevels = useCallback((timestamp) => {
     const analyser = analyserRef.current;
@@ -152,6 +259,7 @@ export default function Listener() {
       setIsListening(true);
       setLevels(DEFAULT_LEVELS);
       setShowDeviceList(false);
+      startSpeechRecognition();
     } catch (startError) {
       console.error('Unable to start listener', startError);
       setError('Unable to listen to that source. Check permissions and that the source is available.');
@@ -243,6 +351,10 @@ export default function Listener() {
             <small>db</small>
           </span>
         </span>
+        <span className={styles.speechLine}>{speechText}</span>
+        <span className={`${styles.matchLine} ${speechMatch ? styles.matchActive : ''}`}>
+          {speechMatch ? `match: ${speechMatch}` : 'match: none'}
+        </span>
       </button>
 
       {(isListingDevices || deviceError || (devices.length > 0 && showDeviceList)) && (
@@ -270,6 +382,11 @@ export default function Listener() {
       )}
 
       {error && <span className={styles.error}>{error}</span>}
+      {!error && speechError && <span className={styles.error}>{speechError}</span>}
+      {!error && !speechError && !speechSupported && (
+        <span className={styles.status}>Speech recognition is unavailable in this browser.</span>
+      )}
+      {!error && !speechError && speechPaused && <span className={styles.status}>Speech paused for 6 seconds.</span>}
     </aside>
   );
 }
