@@ -183,6 +183,11 @@
   left: 12px;
   z-index: 1190;
   max-width: min(480px, calc(100vw - 24px));
+  padding: 8px 10px;
+  background: rgba(8, 12, 18, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
   pointer-events: none;
 }
 
@@ -248,7 +253,7 @@
 .status,
 .error {
   display: block;
-  padding: 6px 0;
+  padding: 0;
   font-size: 12px;
   line-height: 1.3;
 }
