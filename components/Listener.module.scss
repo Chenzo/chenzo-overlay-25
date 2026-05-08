@@ -58,3 +58,27 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+.triggerPhrase {
+  position: fixed;
+  left: 50%;
+  bottom: 8vh;
+  z-index: 1100;
+  max-width: 90vw;
+  pointer-events: none;
+  transform: translateX(-50%);
+  animation: phraseBlink 450ms steps(2, start) infinite;
+  color: #f2f7fb;
+  font-size: 70pt;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  overflow-wrap: anywhere;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.72);
+}
+
+@keyframes phraseBlink {
+  50% {
+    opacity: 0;
+  }
+}

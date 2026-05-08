@@ -10,6 +10,7 @@ export default function Listener({ setCurrentAudio }) {
   const [isPaused, setIsPaused] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [hasConnectionError, setHasConnectionError] = useState(false);
+  const [triggerPhrase, setTriggerPhrase] = useState('');
   const isPausedRef = useRef(false);
   const pauseTimeoutRef = useRef(null);
   const socketRef = useRef(null);
@@ -31,6 +32,7 @@ export default function Listener({ setCurrentAudio }) {
       console.log('[Listener] Trigger pause complete');
       pauseTimeoutRef.current = null;
       setPauseState(false);
+      setTriggerPhrase('');
     }, TRIGGER_PAUSE_MS);
   }, [setPauseState]);
 
@@ -76,6 +78,7 @@ export default function Listener({ setCurrentAudio }) {
 
         if (message.type === 'trigger' && message.audio) {
           console.log(`[Listener] Trigger received: ${message.audio}`);
+          setTriggerPhrase(message.phrase || '');
           setCurrentAudio(message.audio);
           startTriggerPause();
         }
@@ -172,21 +175,25 @@ export default function Listener({ setCurrentAudio }) {
   }
 
   return (
-    <div className={styles.micBadge}>
-      <button
-        type='button'
-        className={`${styles.micIcon} ${micStateClass}`}
-        onClick={handleMicClick}
-        aria-label={isConnected && !hasConnectionError ? 'Disconnect listener' : 'Reconnect listener'}
-        aria-pressed={isConnected}
-      >
-        <svg className={styles.micGlyph} viewBox='0 0 24 24' aria-hidden='true'>
-          <path d='M12 15a4 4 0 0 0 4-4V7a4 4 0 1 0-8 0v4a4 4 0 0 0 4 4Z' />
-          <path d='M19 11a7 7 0 0 1-14 0' />
-          <path d='M12 18v3' />
-          <path d='M8 21h8' />
-        </svg>
-      </button>
-    </div>
+    <>
+      <div className={styles.micBadge}>
+        <button
+          type='button'
+          className={`${styles.micIcon} ${micStateClass}`}
+          onClick={handleMicClick}
+          aria-label={isConnected && !hasConnectionError ? 'Disconnect listener' : 'Reconnect listener'}
+          aria-pressed={isConnected}
+        >
+          <svg className={styles.micGlyph} viewBox='0 0 24 24' aria-hidden='true'>
+            <path d='M12 15a4 4 0 0 0 4-4V7a4 4 0 1 0-8 0v4a4 4 0 0 0 4 4Z' />
+            <path d='M19 11a7 7 0 0 1-14 0' />
+            <path d='M12 18v3' />
+            <path d='M8 21h8' />
+          </svg>
+        </button>
+      </div>
+
+      {triggerPhrase ? <div className={styles.triggerPhrase}>{triggerPhrase}</div> : null}
+    </>
   );
 }
