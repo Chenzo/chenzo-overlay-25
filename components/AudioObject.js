@@ -146,6 +146,18 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
     } else if (audioName == 'binobo_song_2') {
       audioRef.current.src = `${BUCKET_URL}/audio/EvilBinoboSong-2.mp3`;
       audioRef.current.volume = 1;
+    } else if (audioName == 'airhorn') {
+      audioRef.current.src = `${BUCKET_URL}/audio/airhorn.mp3`;
+      audioRef.current.volume = 1;
+    } else if (audioName == 'mywife') {
+      audioRef.current.src = `${BUCKET_URL}/audio/mywife.mp3`;
+      audioRef.current.volume = 0.6;
+    } else if (audioName == 'spongebobfail') {
+      audioRef.current.src = `${BUCKET_URL}/audio/spongebob-fail.mp3`;
+      audioRef.current.volume = 1;
+    } else if (audioName == 'doradidit') {
+      audioRef.current.src = `${BUCKET_URL}/audio/we-did-it.mp3`;
+      audioRef.current.volume = 1;
     }
 
     audioRef.current.addEventListener('ended', function () {
