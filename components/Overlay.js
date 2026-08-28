@@ -16,7 +16,7 @@ import AncientCoin from './AncientCoin';
 import TestCoinButton from './TestCoinButton';
 import RewardCreator from './RewardCreator';
 import EventSubHandler from './EventSubHandler';
-import CameraHolder from './CameraHolder';
+//import CameraHolder from './CameraHolder';
 //import Listener from './Listener';
 
 export default function Overlay({ }) {
@@ -322,8 +322,8 @@ export default function Overlay({ }) {
   return (
     <section className={styles.overlay}>
       {showBartender && <Header alignment={alignment} />}
-      {/* <Listener setCurrentAudio={setCurrentAudio} /> */}
-      <CameraHolder afkType={overlayToggle} />
+      {/* <Listener setCurrentAudio={setCurrentAudio} />
+      <CameraHolder afkType={overlayToggle} /> */}
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <Sunks sunkShipArray={sunkShipArray} />
       <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
