@@ -1,9 +1,15 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { rewards } from '../config/rewards';
+import { useEffect, useRef, useState } from 'react';
 
-export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio }) {
+export default function EventSubHandler({ rewards, onCoinRewardRedeemed, setCurrentAudio }) {
   const [isInitialized, setIsInitialized] = useState(false);
+  // Kept in a ref so the WebSocket (set up once below) always matches against the
+  // current theme's rewards without needing to reconnect when the theme changes.
+  const rewardsRef = useRef(rewards);
+
+  useEffect(() => {
+    rewardsRef.current = rewards;
+  }, [rewards]);
 
   useEffect(() => {
     const accessToken = localStorage.getItem('twitchAccessToken');
@@ -54,9 +60,9 @@ export default function EventSubHandler({ onCoinRewardRedeemed, setCurrentAudio 
             const redemption = payload.event;
             console.log('🎁 Channel point redemption detected:', redemption);
 
-            // Check if this is any of our configured rewards
-            const matchedReward = rewards.find((reward) =>
-              redemption.reward.title.toLowerCase().includes(reward.title.toLowerCase())
+            // Check if this is any of the active theme's configured rewards
+            const matchedReward = rewardsRef.current.find(
+              (reward) => redemption.reward.title.toLowerCase() === reward.title.toLowerCase()
             );
 
             if (matchedReward) {

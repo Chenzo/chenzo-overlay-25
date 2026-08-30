@@ -5,21 +5,18 @@ import { useEffect, useState } from 'react';
 import { hasFullAccess } from '../config/authorizedUsers';
 
 import styles from './Overlay.module.scss';
-import Header from './Header';
 import AudioObject from './AudioObject';
-import Footer from './Footer';
-import Sunks from './Sunks';
-import DiscordImage from './DiscordImage';
+import ChatRelay from './ChatRelay';
 import LoginButton from './LoginButton';
 import LogOutButton from './LogOutButton';
-import AncientCoin from './AncientCoin';
-import TestCoinButton from './TestCoinButton';
 import RewardCreator from './RewardCreator';
 import EventSubHandler from './EventSubHandler';
-//import CameraHolder from './CameraHolder';
+import { themes } from './themes';
+import { rewardsByTheme } from '../config/rewards';
+import CameraHolder from './CameraHolder';
 //import Listener from './Listener';
 
-export default function Overlay({ }) {
+export default function Overlay({}) {
   const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
   const [alignment, setAlignment] = useState(50);
   const [currentAudio, setCurrentAudio] = useState('');
@@ -38,6 +35,15 @@ export default function Overlay({ }) {
   const [isLive, setIsLive] = useState(false);
   const [showCoin, setShowCoin] = useState(false);
   const [showBartender, setShowBartender] = useState(true);
+  const [activeTheme, setActiveTheme] = useState(null); // Possible values: null, 'SoT', 'Arc' — set by Murray's setTheme event
+
+  // Twitch followers/subs + chat: fetched here at the overlay level so the connection stays up
+  // regardless of theme, then handed down as props to whichever theme is mounted to render.
+  const [followers, setFollowers] = useState([]);
+  const [subs, setSubs] = useState([]);
+  const [showingSubs, setShowingSubs] = useState(false);
+  const [isChatting, setIsChatting] = useState(false);
+  const [chatMessage, setChatMessage] = useState(null);
 
   const listenToServer = () => {
     console.log('Listening to server...');
@@ -62,6 +68,9 @@ export default function Overlay({ }) {
           setOverlayToggle(data.theTarget); // Possible values: '', 'afk', 'whiskey', 'family'
         } else if (data?.theEvent == 'showBartender') {
           setShowBartender(data?.theTarget === 'true' ? true : false);
+        } else if (data?.theEvent == 'setTheme') {
+          console.log(`Setting active theme: ${data.theTarget}`);
+          setActiveTheme(data.theTarget); // Possible values: 'SoT', 'Arc'
         } else if (
           data?.theEvent == 'shipsunk' ||
           data?.theEvent == 'shipresunk' ||
@@ -288,11 +297,79 @@ export default function Overlay({ }) {
     }
   }, [loggedIn]);
 
+  // Poll followers/subs regardless of theme; the active theme renders the resulting data.
+  useEffect(() => {
+    const accessToken = localStorage.getItem('twitchAccessToken');
+    const broadcaster_id = process.env.NEXT_PUBLIC_TWITCH_USERID;
+
+    const fetchSubscribers = async () => {
+      try {
+        const response = await fetch(
+          `https://api.twitch.tv/helix/subscriptions?broadcaster_id=${broadcaster_id}&first=10`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Client-Id': process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch subscribers');
+        }
+
+        const data = await response.json();
+
+        setSubs(data.data || []);
+        return data.data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const fetchFollowers = async () => {
+      try {
+        const response = await fetch(
+          `https://api.twitch.tv/helix/channels/followers?broadcaster_id=${broadcaster_id}&first=10`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Client-Id': process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch followers');
+        }
+
+        const data = await response.json();
+        setFollowers(data.data || []);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (loggedIn && accessToken && !isDevelopment) {
+      fetchFollowers();
+      fetchSubscribers();
+    }
+
+    const interval = setInterval(() => {
+      if (!isDevelopment) {
+        setShowingSubs((prevShowingSubs) => !prevShowingSubs);
+        fetchFollowers();
+        fetchSubscribers();
+      }
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [loggedIn]);
+
   if (!loggedIn) {
     return (
       <section className={styles.overlay}>
         <LoginButton />
-        123123
       </section>
     );
   }
@@ -319,19 +396,51 @@ export default function Overlay({ }) {
     );
   }
 
+  const activeThemeConfig = activeTheme ? themes[activeTheme] : null;
+  const currentThemeRewards = activeTheme ? rewardsByTheme[activeTheme] || [] : [];
+  const ActiveThemeComponent = activeThemeConfig?.Component;
+
   return (
     <section className={styles.overlay}>
-      {showBartender && <Header alignment={alignment} />}
-      {/* <Listener setCurrentAudio={setCurrentAudio} />
-      <CameraHolder afkType={overlayToggle} /> */}
+      {/* <Listener setCurrentAudio={setCurrentAudio} /> */}
+      {activeTheme && (
+        <CameraHolder
+          afkType={overlayToggle}
+          frameClassName={activeThemeConfig?.cameraFrameClassName}
+          FrameWrapper={activeThemeConfig?.cameraFrameWrapper}
+          mirror={activeThemeConfig?.cameraMirror}
+          positionSide={activeThemeConfig?.cameraPositionSide}
+        />
+      )}
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
-      <Sunks sunkShipArray={sunkShipArray} />
-      <DiscordImage pushedImage={pushedImage} setPushedImage={setPushedImage} setCurrentAudio={setCurrentAudio} />
-      {showBartender && <Footer loggedIn={loggedIn} />}
-      <AncientCoin showCoin={showCoin} onCoinHidden={handleCoinHidden} />
-      <TestCoinButton onTestCoin={handleCoinRewardRedeemed} />
-      <RewardCreator />
-      <EventSubHandler onCoinRewardRedeemed={handleCoinRewardRedeemed} setCurrentAudio={setCurrentAudio} />
+      <ChatRelay setIsChatting={setIsChatting} onMessage={setChatMessage} />
+      {activeTheme && (
+        <>
+          <RewardCreator rewards={currentThemeRewards} />
+          <EventSubHandler
+            rewards={currentThemeRewards}
+            onCoinRewardRedeemed={handleCoinRewardRedeemed}
+            setCurrentAudio={setCurrentAudio}
+          />
+        </>
+      )}
+      {ActiveThemeComponent && (
+        <ActiveThemeComponent
+          alignment={alignment}
+          showBartender={showBartender}
+          sunkShipArray={sunkShipArray}
+          pushedImage={pushedImage}
+          setPushedImage={setPushedImage}
+          setCurrentAudio={setCurrentAudio}
+          showCoin={showCoin}
+          onCoinHidden={handleCoinHidden}
+          followers={followers}
+          subs={subs}
+          showingSubs={showingSubs}
+          isChatting={isChatting}
+          chatMessage={chatMessage}
+        />
+      )}
       {!isLive && (
         <div className={styles.twitchStatus}>
           <img src='/images/disconnect-plug-icon.png' alt='' />

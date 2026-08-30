@@ -158,6 +158,9 @@ export default function AudioObject({ currentAudio, setCurrentAudio }) {
     } else if (audioName == 'doradidit') {
       audioRef.current.src = `${BUCKET_URL}/audio/we-did-it.mp3`;
       audioRef.current.volume = 1;
+    } else if (audioName == 'coin') {
+      audioRef.current.src = '/audio/coin.mp3';
+      audioRef.current.volume = 0.5;
     }
 
     audioRef.current.addEventListener('ended', function () {
