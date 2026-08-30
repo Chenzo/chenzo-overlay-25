@@ -1,0 +1,15 @@
+.logoWrapper {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 150px;
+  max-width: 150px;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.logo {
+  display: block;
+  width: 100%;
+  height: auto;
+}

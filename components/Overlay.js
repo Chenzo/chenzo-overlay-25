@@ -11,10 +11,9 @@ import LoginButton from './LoginButton';
 import LogOutButton from './LogOutButton';
 import RewardCreator from './RewardCreator';
 import EventSubHandler from './EventSubHandler';
-import SotTheme from './themes/SotTheme';
-import ArcTheme from './themes/ArcTheme';
+import { themes } from './themes';
 import { rewardsByTheme } from '../config/rewards';
-//import CameraHolder from './CameraHolder';
+import CameraHolder from './CameraHolder';
 //import Listener from './Listener';
 
 export default function Overlay({}) {
@@ -25,7 +24,6 @@ export default function Overlay({}) {
   const [pushedImage, setPushedImage] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(true);
-  // eslint-disable-next-line no-unused-vars
   const [overlayToggle, setOverlayToggle] = useState(null); // Possible values: '', 'afk', 'whiskey', 'family'
   const [streamDescription, setStreamDescription] = useState(
     `The crew of the Holy Bartender has set sail again on The Sea of Thieves! There's a stream! Come watch along https://www.twitch.tv/chenzorama`
@@ -398,12 +396,22 @@ export default function Overlay({}) {
     );
   }
 
+  const activeThemeConfig = activeTheme ? themes[activeTheme] : null;
   const currentThemeRewards = activeTheme ? rewardsByTheme[activeTheme] || [] : [];
+  const ActiveThemeComponent = activeThemeConfig?.Component;
 
   return (
     <section className={styles.overlay}>
-      {/* <Listener setCurrentAudio={setCurrentAudio} />
-      <CameraHolder afkType={overlayToggle} /> */}
+      {/* <Listener setCurrentAudio={setCurrentAudio} /> */}
+      {activeTheme && (
+        <CameraHolder
+          afkType={overlayToggle}
+          frameClassName={activeThemeConfig?.cameraFrameClassName}
+          FrameWrapper={activeThemeConfig?.cameraFrameWrapper}
+          mirror={activeThemeConfig?.cameraMirror}
+          positionSide={activeThemeConfig?.cameraPositionSide}
+        />
+      )}
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <ChatRelay setIsChatting={setIsChatting} onMessage={setChatMessage} />
       {activeTheme && (
@@ -416,8 +424,8 @@ export default function Overlay({}) {
           />
         </>
       )}
-      {activeTheme === 'SoT' && (
-        <SotTheme
+      {ActiveThemeComponent && (
+        <ActiveThemeComponent
           alignment={alignment}
           showBartender={showBartender}
           sunkShipArray={sunkShipArray}
@@ -426,7 +434,6 @@ export default function Overlay({}) {
           setCurrentAudio={setCurrentAudio}
           showCoin={showCoin}
           onCoinHidden={handleCoinHidden}
-          onTestCoin={handleCoinRewardRedeemed}
           followers={followers}
           subs={subs}
           showingSubs={showingSubs}
@@ -434,7 +441,6 @@ export default function Overlay({}) {
           chatMessage={chatMessage}
         />
       )}
-      {activeTheme === 'Arc' && <ArcTheme />}
       {!isLive && (
         <div className={styles.twitchStatus}>
           <img src='/images/disconnect-plug-icon.png' alt='' />

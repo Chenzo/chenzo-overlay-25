@@ -1,5 +1,14 @@
+// import ArcWonkyFrame from './ArcWonkyFrame';
+// import styles from './ArcTheme.module.scss';
+
 export default function ArcTheme() {
-  // Nothing to render yet — the Arc reward plays the shared coin sound via AudioObject
-  // until a dedicated visual is added.
+  // Logo temporarily disabled while sizing/placement gets finalized — uncomment to bring back.
+  // return (
+  //   <div className={styles.logoWrapper}>
+  //     <ArcWonkyFrame>
+  //       <img src='https://www.chenzorama.com/images/overlay/fd-logo.png' alt='' className={styles.logo} />
+  //     </ArcWonkyFrame>
+  //   </div>
+  // );
   return null;
 }

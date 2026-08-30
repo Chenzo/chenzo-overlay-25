@@ -3,7 +3,6 @@ import Sunks from '../Sunks';
 import DiscordImage from '../DiscordImage';
 import Footer from '../Footer';
 import AncientCoin from '../AncientCoin';
-import TestCoinButton from '../TestCoinButton';
 
 export default function SotTheme({
   alignment,
@@ -14,7 +13,6 @@ export default function SotTheme({
   setCurrentAudio,
   showCoin,
   onCoinHidden,
-  onTestCoin,
   followers,
   subs,
   showingSubs,
@@ -36,7 +34,6 @@ export default function SotTheme({
         />
       )}
       <AncientCoin showCoin={showCoin} onCoinHidden={onCoinHidden} />
-      <TestCoinButton onTestCoin={onTestCoin} />
     </>
   );
 }

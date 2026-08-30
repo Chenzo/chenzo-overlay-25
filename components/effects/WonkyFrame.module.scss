@@ -1,0 +1,24 @@
+.wonkyWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.wonkyMask {
+  width: 100%;
+}
+
+.wonkyOutline {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
+}
+
+.wonkyOutline polygon {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}

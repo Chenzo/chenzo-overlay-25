@@ -1,11 +1,20 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import styles from './CameraHolder.module.scss';
 
 const BUCKET_URL = process.env.NEXT_PUBLIC_BUCKET_URL;
 
-export default function CameraHolder({ afkType }) {
+const CAMERA_MARGIN = 20;
+const CAMERA_BOTTOM_MARGIN = 70;
+
+export default function CameraHolder({
+  afkType,
+  frameClassName,
+  FrameWrapper = Fragment,
+  mirror = false,
+  positionSide = 'right',
+}) {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
   const [error, setError] = useState('');
@@ -18,17 +27,18 @@ export default function CameraHolder({ afkType }) {
   const [showDeviceList, setShowDeviceList] = useState(false);
   const holderRef = useRef(null);
 
-  const getDefaultPosition = () => {
+  const getDefaultPosition = (side) => {
     if (typeof window === 'undefined') return { x: 20, y: 20 };
     const defaultWidth = 320;
     const defaultHeight = 180; // 16:9 aspect with width 320
+    const x = side === 'left' ? CAMERA_MARGIN : Math.max(10, window.innerWidth - defaultWidth - CAMERA_MARGIN);
     return {
-      x: Math.max(10, window.innerWidth - defaultWidth - 20),
-      y: Math.max(10, window.innerHeight - defaultHeight - 70),
+      x,
+      y: Math.max(10, window.innerHeight - defaultHeight - CAMERA_BOTTOM_MARGIN),
     };
   };
 
-  const [position, setPosition] = useState(getDefaultPosition);
+  const [position, setPosition] = useState(() => getDefaultPosition(positionSide));
   const dragOffsetRef = useRef({ x: 0, y: 0 });
   const isDraggingRef = useRef(false);
   const [hasDragged, setHasDragged] = useState(false);
@@ -61,15 +71,15 @@ export default function CameraHolder({ afkType }) {
       const holder = holderRef.current;
       const width = holder?.offsetWidth || 320;
       const height = holder?.offsetHeight || 180;
-      const x = Math.max(10, window.innerWidth - width - 20);
-      const y = Math.max(10, window.innerHeight - height - 70);
+      const x = positionSide === 'left' ? CAMERA_MARGIN : Math.max(10, window.innerWidth - width - CAMERA_MARGIN);
+      const y = Math.max(10, window.innerHeight - height - CAMERA_BOTTOM_MARGIN);
       setPosition({ x, y });
     };
 
     setDefaultPosition();
     window.addEventListener('resize', setDefaultPosition);
     return () => window.removeEventListener('resize', setDefaultPosition);
-  }, []);
+  }, [positionSide]);
 
   useEffect(() => {
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -148,7 +158,17 @@ export default function CameraHolder({ afkType }) {
         throw new Error('Device enumeration not supported.');
       }
 
-      const mediaDevices = await navigator.mediaDevices.enumerateDevices();
+      let mediaDevices = await navigator.mediaDevices.enumerateDevices();
+      const hasLabels = mediaDevices.some((d) => d.kind === 'videoinput' && d.label);
+
+      if (!hasLabels) {
+        // Browsers hide real device labels until camera permission has been granted at least
+        // once for this origin. Request a throwaway stream to unlock them, then re-enumerate.
+        const tempStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        tempStream.getTracks().forEach((track) => track.stop());
+        mediaDevices = await navigator.mediaDevices.enumerateDevices();
+      }
+
       setDevices(
         mediaDevices
           .filter((d) => d.kind === 'videoinput')
@@ -224,20 +244,28 @@ export default function CameraHolder({ afkType }) {
           )}
         </div>
       )}
-      <div
-        className={styles.frame}
-        onClick={handleFrameClick}
-        role='button'
-        tabIndex={0}
-        onKeyDown={(e) => (e.key === 'Enter' ? handleListDevices() : null)}
-      >
-        {videoSRC && (
-          <video autoPlay muted loop className={styles.video}>
-            <source src={videoSRC} type='video/mp4' />
-          </video>
-        )}
-        <video ref={videoRef} muted playsInline autoPlay className={`${videoSRC ? styles.hide : ''} ${styles.video}`} />
-      </div>
+      <FrameWrapper>
+        <div
+          className={`${styles.frame} ${frameClassName || ''}`}
+          onClick={handleFrameClick}
+          role='button'
+          tabIndex={0}
+          onKeyDown={(e) => (e.key === 'Enter' ? handleListDevices() : null)}
+        >
+          {videoSRC && (
+            <video autoPlay muted loop className={styles.video}>
+              <source src={videoSRC} type='video/mp4' />
+            </video>
+          )}
+          <video
+            ref={videoRef}
+            muted
+            playsInline
+            autoPlay
+            className={`${videoSRC ? styles.hide : ''} ${styles.video} ${mirror ? styles.mirrored : ''}`}
+          />
+        </div>
+      </FrameWrapper>
       {isStarting && !error && <span className={styles.status}>Starting camera…</span>}
       {error && <span className={styles.error}>{error}</span>}
     </div>
