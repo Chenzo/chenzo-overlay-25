@@ -3,8 +3,7 @@ import tmi from 'tmi.js';
 import { useEffect, useState } from 'react';
 import styles from './ChatRelay.module.scss';
 
-export default function ChatRelay({ setIsChatting }) {
-  const [latestChat, setLatestChat] = useState(null);
+export default function ChatRelay({ setIsChatting, onMessage }) {
   const [messageId, setMessageId] = useState(0); // Track unique message IDs
 
   const convertEmotes = (message, emotes) => {
@@ -64,7 +63,7 @@ export default function ChatRelay({ setIsChatting }) {
         </div>
       );
 
-      setLatestChat(newC);
+      onMessage(newC);
       setIsChatting(true);
       const chatCount = setTimeout(() => {
         setIsChatting(false);
@@ -79,5 +78,5 @@ export default function ChatRelay({ setIsChatting }) {
     return () => client.disconnect(); // Cleanup on component unmount
   }, [messageId]);
 
-  return <section className={styles.chatSpace}>{latestChat}</section>;
+  return null; // This component doesn't render anything — the theme renders the chat message
 }

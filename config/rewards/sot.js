@@ -1,7 +1,7 @@
-// Channel Point Rewards Configuration
+// Channel Point Rewards Configuration — Sea of Thieves theme
 // Add, edit, or remove rewards here
 
-export const rewards = [
+export const sotRewards = [
   {
     id: 'fake-coin',
     title: 'Toss a Coin to Your Pirate',
@@ -171,29 +171,3 @@ export const rewards = [
   //   },
   // },
 ];
-
-// Helper function to get reward by ID
-export const getRewardById = (id) => {
-  return rewards.find((reward) => reward.id === id);
-};
-
-// Helper function to get reward by title (case-insensitive)
-export const getRewardByTitle = (title) => {
-  return rewards.find((reward) => reward.title.toLowerCase().includes(title.toLowerCase()));
-};
-
-// Helper function to get all enabled rewards
-export const getEnabledRewards = () => {
-  return rewards.filter((reward) => reward.is_enabled);
-};
-
-// Default settings for all rewards
-export const defaultRewardSettings = {
-  is_enabled: true,
-  is_user_input_required: false,
-  should_redemptions_skip_request_queue: true,
-  animation: {
-    duration: 3000,
-    volume: 0.5,
-  },
-};
