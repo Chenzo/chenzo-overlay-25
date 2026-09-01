@@ -129,7 +129,12 @@ export default function CameraHolder({
 
     try {
       const constraints = {
-        video: { deviceId: { exact: deviceId } },
+        video: {
+          deviceId: { exact: deviceId },
+          width: { ideal: 640 },
+          height: { ideal: 360 },
+          frameRate: { ideal: 30 },
+        },
         audio: false,
       };
 
