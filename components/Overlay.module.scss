@@ -2,6 +2,13 @@
 @use '/styles/_variables' as *;
 
 .overlay {
+    .devBackground {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+    }
+
     .twitchStatus {
         position: absolute;
         bottom: 10px;

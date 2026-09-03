@@ -5,6 +5,8 @@
 
 .wonkyMask {
   width: 100%;
+  // Keep in sync with BORDER_TRANSITION_MS in WonkyFrame.js so the mask and border reroll in step.
+  transition: clip-path 900ms ease-in-out;
 }
 
 .wonkyOutline {

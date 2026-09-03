@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
-export default function EventSubHandler({ rewards, onCoinRewardRedeemed, setCurrentAudio }) {
+export default function EventSubHandler({ rewards, onCoinRewardRedeemed, onTokenRewardRedeemed, setCurrentAudio }) {
   const [isInitialized, setIsInitialized] = useState(false);
   // Kept in a ref so the WebSocket (set up once below) always matches against the
   // current theme's rewards without needing to reconnect when the theme changes.
@@ -74,6 +74,12 @@ export default function EventSubHandler({ rewards, onCoinRewardRedeemed, setCurr
               // Handle different animation types
               if (matchedReward.animation.type === 'ancient-coin') {
                 onCoinRewardRedeemed(); // This triggers the AncientCoin component (which handles its own audio)
+              } else if (matchedReward.animation.type === 'raider-token') {
+                onTokenRewardRedeemed(); // This triggers the RaiderToken component
+                if (matchedReward.animation.audioObject) {
+                  console.log(`-- Playing AudioObject: ${matchedReward.animation.audioObject}`);
+                  setCurrentAudio(matchedReward.animation.audioObject);
+                }
               } else if (matchedReward.animation.type === 'audioonly' && matchedReward.animation.audioObject) {
                 console.log(`-- Playing AudioObject: ${matchedReward.animation.audioObject}`);
                 setCurrentAudio(matchedReward.animation.audioObject);

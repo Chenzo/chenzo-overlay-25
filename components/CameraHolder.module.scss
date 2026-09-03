@@ -9,11 +9,26 @@
   user-select: none;
 }
 
+.frameStack {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+}
+
 .frame {
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   cursor: pointer;
+}
+
+// Sits behind the frame within the same stacking context, so anything rendered here (e.g.
+// RaiderToken) is hidden by the frame's opaque video until it animates past its edges.
+.behindContent {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .video {

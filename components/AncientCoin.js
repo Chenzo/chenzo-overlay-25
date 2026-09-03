@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import styles from './AncientCoin.module.scss';
 
+const BUCKET_URL = process.env.NEXT_PUBLIC_BUCKET_URL;
+
 export default function AncientCoin({ showCoin, onCoinHidden }) {
   const [isVisible, setIsVisible] = useState(false);
   const [randomPosition, setRandomPosition] = useState(0);
@@ -15,7 +17,7 @@ export default function AncientCoin({ showCoin, onCoinHidden }) {
 
       // Play coin sound
       try {
-        const audio = new Audio('/audio/coin.mp3');
+        const audio = new Audio(`${BUCKET_URL}/audio/coin.mp3`);
         audio.volume = 0.5; // Set volume to 50%
         audio.play().catch((error) => {
           console.log('Could not play coin sound:', error);
