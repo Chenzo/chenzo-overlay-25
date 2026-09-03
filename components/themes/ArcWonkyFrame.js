@@ -5,7 +5,14 @@ import WonkyFrame from '../effects/WonkyFrame';
 // (the camera frame, the logo, and whatever comes next).
 export default function ArcWonkyFrame({ children, className }) {
   return (
-    <WonkyFrame intervalMs={20000} borderColor='#d4af37' borderWidth={5} className={className}>
+    <WonkyFrame
+      intervalMs={20000}
+      borderColor='#d4af37'
+      borderWidth={5}
+      maskOutlineColor='#ffffff'
+      maskOutlineWidth={2}
+      className={className}
+    >
       {children}
     </WonkyFrame>
   );

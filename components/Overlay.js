@@ -34,6 +34,17 @@ export default function Overlay({}) {
 
   const [isLive, setIsLive] = useState(false);
   const [showCoin, setShowCoin] = useState(false);
+  const [showToken, setShowToken] = useState(false);
+  // Dev-only placeholder backdrop so the transparent overlay has something behind it to check
+  // positioning/contrast against. Rolled once per mount, not on every re-render.
+  const [devGradient] = useState(() => {
+    const randomGray = () => {
+      const value = Math.round(Math.random() * (191 - 64) + 64); // 25%-75% gray
+      return `rgb(${value}, ${value}, ${value})`;
+    };
+    return `linear-gradient(135deg, ${randomGray()}, ${randomGray()})`;
+  });
+
   const [showBartender, setShowBartender] = useState(true);
   const [activeTheme, setActiveTheme] = useState(null); // Possible values: null, 'SoT', 'Arc' — set by Murray's setTheme event
 
@@ -230,6 +241,15 @@ export default function Overlay({}) {
     setShowCoin(false);
   };
 
+  const handleTokenRewardRedeemed = () => {
+    console.log('Raider token reward redeemed!');
+    setShowToken(true);
+  };
+
+  const handleTokenHidden = () => {
+    setShowToken(false);
+  };
+
   useEffect(() => {
     if (!isDevelopment) {
       listenToServer();
@@ -402,12 +422,17 @@ export default function Overlay({}) {
 
   return (
     <section className={styles.overlay}>
+      {process.env.NODE_ENV === 'development' && (
+        <div className={styles.devBackground} style={{ background: devGradient }} />
+      )}
       {/* <Listener setCurrentAudio={setCurrentAudio} /> */}
       {activeTheme && (
         <CameraHolder
           afkType={overlayToggle}
           frameClassName={activeThemeConfig?.cameraFrameClassName}
           FrameWrapper={activeThemeConfig?.cameraFrameWrapper}
+          BehindContent={activeThemeConfig?.cameraBehindContent}
+          behindContentProps={{ showToken, onTokenHidden: handleTokenHidden }}
           mirror={activeThemeConfig?.cameraMirror}
           positionSide={activeThemeConfig?.cameraPositionSide}
         />
@@ -420,6 +445,7 @@ export default function Overlay({}) {
           <EventSubHandler
             rewards={currentThemeRewards}
             onCoinRewardRedeemed={handleCoinRewardRedeemed}
+            onTokenRewardRedeemed={handleTokenRewardRedeemed}
             setCurrentAudio={setCurrentAudio}
           />
         </>

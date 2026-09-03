@@ -12,12 +12,10 @@ export const arcRewards = [
     background_color: '#4CAF50',
     should_redemptions_skip_request_queue: true,
     // No default_image yet — Twitch will use its stock icon until an Arc-specific one exists.
-    // No animation yet either — plays the existing coin sound via AudioObject (see
-    // AudioObject.js 'coin') until a dedicated visual is added.
     animation: {
-      type: 'audioonly',
+      type: 'raider-token',
       duration: 3000,
-      audioObject: 'coin',
+      audioObject: 'token',
     },
   },
 ];

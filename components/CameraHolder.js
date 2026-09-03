@@ -12,6 +12,8 @@ export default function CameraHolder({
   afkType,
   frameClassName,
   FrameWrapper = Fragment,
+  BehindContent = null,
+  behindContentProps = {},
   mirror = false,
   positionSide = 'right',
 }) {
@@ -249,28 +251,31 @@ export default function CameraHolder({
           )}
         </div>
       )}
-      <FrameWrapper>
-        <div
-          className={`${styles.frame} ${frameClassName || ''}`}
-          onClick={handleFrameClick}
-          role='button'
-          tabIndex={0}
-          onKeyDown={(e) => (e.key === 'Enter' ? handleListDevices() : null)}
-        >
-          {videoSRC && (
-            <video autoPlay muted loop className={styles.video}>
-              <source src={videoSRC} type='video/mp4' />
-            </video>
-          )}
-          <video
-            ref={videoRef}
-            muted
-            playsInline
-            autoPlay
-            className={`${videoSRC ? styles.hide : ''} ${styles.video} ${mirror ? styles.mirrored : ''}`}
-          />
-        </div>
-      </FrameWrapper>
+      <div className={styles.frameStack}>
+        {BehindContent && <BehindContent {...behindContentProps} className={styles.behindContent} />}
+        <FrameWrapper>
+          <div
+            className={`${styles.frame} ${frameClassName || ''}`}
+            onClick={handleFrameClick}
+            role='button'
+            tabIndex={0}
+            onKeyDown={(e) => (e.key === 'Enter' ? handleListDevices() : null)}
+          >
+            {videoSRC && (
+              <video autoPlay muted loop className={styles.video}>
+                <source src={videoSRC} type='video/mp4' />
+              </video>
+            )}
+            <video
+              ref={videoRef}
+              muted
+              playsInline
+              autoPlay
+              className={`${videoSRC ? styles.hide : ''} ${styles.video} ${mirror ? styles.mirrored : ''}`}
+            />
+          </div>
+        </FrameWrapper>
+      </div>
       {isStarting && !error && <span className={styles.status}>Starting camera…</span>}
       {error && <span className={styles.error}>{error}</span>}
     </div>
