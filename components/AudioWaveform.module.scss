@@ -1,0 +1,85 @@
+.waveform {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 100px;
+  z-index: 6;
+  user-select: none;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+// Shown at 40% of its natural size (869x423), centered on the bar, behind the canvas.
+.backdrop {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 169px;
+  transform: translate(-50%, -50%);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.canvas {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d7e3ff;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.error {
+  position: absolute;
+  bottom: 100%;
+  width: 100%;
+  margin-bottom: 6px;
+  color: #ffb0b0;
+  font-size: 14px;
+  text-align: center;
+}
+
+.deviceList {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.deviceList li {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 8px;
+  color: #e4ecff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.selectedDevice {
+  border-color: #7cc4ff;
+  box-shadow: 0 0 0 1px rgba(124, 196, 255, 0.3);
+}

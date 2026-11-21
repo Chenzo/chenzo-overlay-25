@@ -2,6 +2,9 @@
 
 import { Fragment, useEffect, useRef, useState } from 'react';
 import styles from './CameraHolder.module.scss';
+import SkullAvatar from './SkullAvatar';
+import TrackingDebug from './TrackingDebug';
+import useFaceTracking from './useFaceTracking';
 
 const BUCKET_URL = process.env.NEXT_PUBLIC_BUCKET_URL;
 
@@ -16,6 +19,7 @@ export default function CameraHolder({
   behindContentProps = {},
   mirror = false,
   positionSide = 'right',
+  hidden = false,
 }) {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
@@ -28,6 +32,8 @@ export default function CameraHolder({
   const [selectedDeviceId, setSelectedDeviceId] = useState('');
   const [showDeviceList, setShowDeviceList] = useState(false);
   const holderRef = useRef(null);
+  const showSkull = afkType === 'skullvatar';
+  const trackingRef = useFaceTracking(videoRef, showSkull && !hidden);
 
   const getDefaultPosition = (side) => {
     if (typeof window === 'undefined') return { x: 20, y: 20 };
@@ -220,9 +226,18 @@ export default function CameraHolder({
     handleListDevices();
   };
 
+  // The live video stays rendered (but invisible) while the skull is shown, since it's the
+  // face tracking source.
+  let liveVideoClassName = '';
+  if (videoSRC) {
+    liveVideoClassName = styles.hide;
+  } else if (showSkull) {
+    liveVideoClassName = styles.trackingSource;
+  }
+
   return (
     <div
-      className={styles.cameraHolder}
+      className={`${styles.cameraHolder} ${hidden ? styles.hidden : ''}`}
       ref={holderRef}
       style={{ top: position.y, left: position.x }}
       onMouseDown={handleDragStart}
@@ -266,16 +281,18 @@ export default function CameraHolder({
                 <source src={videoSRC} type='video/mp4' />
               </video>
             )}
+            {showSkull && !videoSRC && <SkullAvatar trackingRef={trackingRef} mirror={mirror} />}
             <video
               ref={videoRef}
               muted
               playsInline
               autoPlay
-              className={`${videoSRC ? styles.hide : ''} ${styles.video} ${mirror ? styles.mirrored : ''}`}
+              className={`${liveVideoClassName} ${styles.video} ${mirror ? styles.mirrored : ''}`}
             />
           </div>
         </FrameWrapper>
       </div>
+      {showSkull && <TrackingDebug trackingRef={trackingRef} />}
       {isStarting && !error && <span className={styles.status}>Starting camera…</span>}
       {error && <span className={styles.error}>{error}</span>}
     </div>
