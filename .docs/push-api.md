@@ -42,6 +42,8 @@ The endpoint is named `pushSound`, but the overlay acts on any `theEvent` it rec
 | `didEvent` | `bbsunk`, `bbpsunk` | Plays the Burning Blade sinking animation |
 | `imagePush` | (unused) | Shows a Discord image. The data goes in `theValue` |
 
+`setTheme`, `showCamera` and `showWaveform` are saved to the browser's localStorage (`overlayTheme`, `overlayShowCamera`, `overlayShowWaveform`). They're restored when the overlay loads, so the last state comes back after a reload or an OBS restart. Other commands aren't saved.
+
 ## Details
 
 ### `setTheme`
@@ -65,6 +67,8 @@ Replaces the camera with a looping video from `NEXT_PUBLIC_BUCKET_URL/video/` or
 | `family` | `family.mp4` |
 | `skullvatar` | Face-tracked skull (see `.docs/SkullFace.md`). Face tracking runs only while this is active. A camera must be selected. |
 | `""` | back to the camera |
+
+While an `afk`, `whiskey` or `family` video is playing, a caption (default `AFK - BRB`) shows in Roboto Condensed over the bottom-right of the frame (`.afkLabel` in `CameraHolder.module.scss`). Click the caption to edit it, then press Enter or click away to save. It's stored in localStorage (`overlayAfkText`), and clearing it restores the default.
 
 ```json
 { "theEvent": "overlayToggle", "theTarget": "afk", "theValue": "", "uid": "teaxc64in" }
@@ -114,6 +118,7 @@ Shows or hides the whole camera section (camera, skull, videos and debug panel) 
 - `theTarget`: the string `true` or `false`. Anything other than `true` hides it.
 - The camera is hidden with CSS rather than removed, so the stream and the chosen device are still there when it comes back.
 - Skull face tracking pauses while the camera is hidden.
+- If an `afk`, `whiskey` or `family` video is turned on while the camera is hidden, the frame shows for that video. It hides again when the video is turned off. The live camera never shows while hidden.
 - Independent of `overlayToggle`: whatever was showing (camera, skull or AFK video) comes back as it was.
 
 ```json

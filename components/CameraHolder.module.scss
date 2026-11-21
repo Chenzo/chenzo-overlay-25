@@ -58,6 +58,24 @@
   }
 }
 
+// Caption shown over the bottom-right of the frame while an AFK video is playing. It sits outside
+// FrameWrapper so a theme's frame mask (e.g. Arc's wonky clip-path) can't crop it.
+.afkLabel {
+  position: absolute;
+  right: 10px;
+  bottom: -2px;
+  z-index: 1;
+  color: #ffffff;
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-shadow: 1px 1px 0 #000000, 0 3px 8px rgba(0, 0, 0, 0.75);
+  white-space: nowrap;
+  cursor: text;
+  outline: none;
+}
+
 .status {
   color: #d7e3ff;
   font-size: 14px;

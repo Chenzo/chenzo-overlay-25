@@ -43,7 +43,7 @@ From `components/AudioWaveform.module.scss`:
   - Fades to transparent over the last 20% before each edge.
 - **Glow:** white glow on the center bars. It's full at the center and gone by the 10% mark, following the white-to-40% fade.
 - **Center line:** a 1px pure green (`#00ff00`) vertical line down the middle of the center bar, always the same height as that bar. It has no glow or shadow.
-- **Backdrop image:** `public/CHENZO-transparent.png` sits behind the bars, centered on the waveform at 40% of its natural size (169px tall, about 347px wide, so it extends above and below the 100px bar), at 15% opacity.
+- **Backdrop image:** `public/CHENZO-transparent.png` sits behind the bars, centered on the waveform at 30% of its natural size (127px tall, about 261px wide, so it extends a little above and below the 100px bar), at 10% opacity.
 - **Drop shadow:** every bar has a 1px solid black shadow offset 1px down and to the right, faded the same as its bar. Only the right and bottom strips that peek out are drawn, so the see-through bars don't turn gray over a full black copy.
 
 ## Tuning
