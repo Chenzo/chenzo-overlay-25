@@ -14,6 +14,7 @@ import EventSubHandler from './EventSubHandler';
 import { themes } from './themes';
 import { rewardsByTheme } from '../config/rewards';
 import CameraHolder from './CameraHolder';
+import AudioWaveform from './AudioWaveform';
 //import Listener from './Listener';
 
 export default function Overlay({}) {
@@ -24,7 +25,7 @@ export default function Overlay({}) {
   const [pushedImage, setPushedImage] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(true);
-  const [overlayToggle, setOverlayToggle] = useState(null); // Possible values: '', 'afk', 'whiskey', 'family'
+  const [overlayToggle, setOverlayToggle] = useState(null); // Possible values: '', 'afk', 'whiskey', 'family', 'skullvatar'
   const [streamDescription, setStreamDescription] = useState(
     `The crew of the Holy Bartender has set sail again on The Sea of Thieves! There's a stream! Come watch along https://www.twitch.tv/chenzorama`
   );
@@ -46,6 +47,8 @@ export default function Overlay({}) {
   });
 
   const [showBartender, setShowBartender] = useState(true);
+  const [showCamera, setShowCamera] = useState(true);
+  const [showWaveform, setShowWaveform] = useState(false);
   const [activeTheme, setActiveTheme] = useState(null); // Possible values: null, 'SoT', 'Arc' — set by Murray's setTheme event
 
   // Twitch followers/subs + chat: fetched here at the overlay level so the connection stays up
@@ -76,9 +79,13 @@ export default function Overlay({}) {
           setCurrentAudio(data.theTarget);
         } else if (data?.theEvent == 'overlayToggle') {
           console.log(`data?.theEvent: ${data.theTarget}`);
-          setOverlayToggle(data.theTarget); // Possible values: '', 'afk', 'whiskey', 'family'
+          setOverlayToggle(data.theTarget); // Possible values: '', 'afk', 'whiskey', 'family', 'skullvatar'
         } else if (data?.theEvent == 'showBartender') {
           setShowBartender(data?.theTarget === 'true' ? true : false);
+        } else if (data?.theEvent == 'showCamera') {
+          setShowCamera(data?.theTarget === 'true' ? true : false);
+        } else if (data?.theEvent == 'showWaveform') {
+          setShowWaveform(data?.theTarget === 'true' ? true : false);
         } else if (data?.theEvent == 'setTheme') {
           console.log(`Setting active theme: ${data.theTarget}`);
           setActiveTheme(data.theTarget); // Possible values: 'SoT', 'Arc'
@@ -435,8 +442,10 @@ export default function Overlay({}) {
           behindContentProps={{ showToken, onTokenHidden: handleTokenHidden }}
           mirror={activeThemeConfig?.cameraMirror}
           positionSide={activeThemeConfig?.cameraPositionSide}
+          hidden={!showCamera}
         />
       )}
+      <AudioWaveform active={showWaveform} />
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
       <ChatRelay setIsChatting={setIsChatting} onMessage={setChatMessage} />
       {activeTheme && (

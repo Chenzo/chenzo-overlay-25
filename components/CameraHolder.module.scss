@@ -7,6 +7,11 @@
   align-items: center;
   gap: 8px;
   user-select: none;
+
+  // Hidden with CSS (not unmounted) so the camera stream and selected device survive.
+  &.hidden {
+    display: none;
+  }
 }
 
 .frameStack {
@@ -38,6 +43,14 @@
 
   &.hide {
     display: none;
+  }
+
+  &.trackingSource {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
   }
 
   &.mirrored {
