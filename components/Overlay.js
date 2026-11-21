@@ -84,11 +84,14 @@ export default function Overlay({}) {
           setShowBartender(data?.theTarget === 'true' ? true : false);
         } else if (data?.theEvent == 'showCamera') {
           setShowCamera(data?.theTarget === 'true' ? true : false);
+          localStorage.setItem('overlayShowCamera', data?.theTarget === 'true' ? 'true' : 'false');
         } else if (data?.theEvent == 'showWaveform') {
           setShowWaveform(data?.theTarget === 'true' ? true : false);
+          localStorage.setItem('overlayShowWaveform', data?.theTarget === 'true' ? 'true' : 'false');
         } else if (data?.theEvent == 'setTheme') {
           console.log(`Setting active theme: ${data.theTarget}`);
           setActiveTheme(data.theTarget); // Possible values: 'SoT', 'Arc'
+          localStorage.setItem('overlayTheme', data.theTarget);
         } else if (
           data?.theEvent == 'shipsunk' ||
           data?.theEvent == 'shipresunk' ||
@@ -258,6 +261,14 @@ export default function Overlay({}) {
   };
 
   useEffect(() => {
+    // Restore the last theme and camera/waveform toggles sent by Murray (saved in listenToServer).
+    const savedTheme = localStorage.getItem('overlayTheme');
+    if (savedTheme) setActiveTheme(savedTheme);
+    const savedShowCamera = localStorage.getItem('overlayShowCamera');
+    if (savedShowCamera) setShowCamera(savedShowCamera === 'true');
+    const savedShowWaveform = localStorage.getItem('overlayShowWaveform');
+    if (savedShowWaveform) setShowWaveform(savedShowWaveform === 'true');
+
     if (!isDevelopment) {
       listenToServer();
       checkStreamStatus();

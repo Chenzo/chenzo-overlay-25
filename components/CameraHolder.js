@@ -1,12 +1,16 @@
 'use client';
 
 import { Fragment, useEffect, useRef, useState } from 'react';
+import { Roboto_Condensed } from 'next/font/google';
 import styles from './CameraHolder.module.scss';
 import SkullAvatar from './SkullAvatar';
 import TrackingDebug from './TrackingDebug';
 import useFaceTracking from './useFaceTracking';
 
 const BUCKET_URL = process.env.NEXT_PUBLIC_BUCKET_URL;
+
+const robotoCondensed = Roboto_Condensed({ subsets: ['latin'] });
+const DEFAULT_AFK_TEXT = 'AFK - BRB';
 
 const CAMERA_MARGIN = 20;
 const CAMERA_BOTTOM_MARGIN = 70;
@@ -32,6 +36,7 @@ export default function CameraHolder({
   const [selectedDeviceId, setSelectedDeviceId] = useState('');
   const [showDeviceList, setShowDeviceList] = useState(false);
   const holderRef = useRef(null);
+  const [afkText, setAfkText] = useState(DEFAULT_AFK_TEXT);
   const showSkull = afkType === 'skullvatar';
   const trackingRef = useFaceTracking(videoRef, showSkull && !hidden);
 
@@ -72,6 +77,11 @@ export default function CameraHolder({
 
   useEffect(() => {
     return () => stopStream();
+  }, []);
+
+  useEffect(() => {
+    const savedAfkText = localStorage.getItem('overlayAfkText');
+    if (savedAfkText) setAfkText(savedAfkText);
   }, []);
 
   useEffect(() => {
@@ -217,6 +227,21 @@ export default function CameraHolder({
     setHasDragged(false);
   };
 
+  // The AFK label is edited in place (contentEditable) and saved on blur. Clearing it falls back
+  // to the default text.
+  const handleAfkTextBlur = (e) => {
+    const text = e.currentTarget.textContent.trim() || DEFAULT_AFK_TEXT;
+    setAfkText(text);
+    localStorage.setItem('overlayAfkText', text);
+  };
+
+  const handleAfkTextKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.currentTarget.blur();
+    }
+  };
+
   const handleFrameClick = () => {
     if (hasDragged) {
       setHasDragged(false);
@@ -237,7 +262,7 @@ export default function CameraHolder({
 
   return (
     <div
-      className={`${styles.cameraHolder} ${hidden ? styles.hidden : ''}`}
+      className={`${styles.cameraHolder} ${hidden && !videoSRC ? styles.hidden : ''}`}
       ref={holderRef}
       style={{ top: position.y, left: position.x }}
       onMouseDown={handleDragStart}
@@ -291,6 +316,19 @@ export default function CameraHolder({
             />
           </div>
         </FrameWrapper>
+        {videoSRC && (
+          <span
+            key={afkText}
+            className={`${styles.afkLabel} ${robotoCondensed.className}`}
+            contentEditable
+            suppressContentEditableWarning
+            onMouseDown={(e) => e.stopPropagation()}
+            onBlur={handleAfkTextBlur}
+            onKeyDown={handleAfkTextKeyDown}
+          >
+            {afkText}
+          </span>
+        )}
       </div>
       {showSkull && <TrackingDebug trackingRef={trackingRef} />}
       {isStarting && !error && <span className={styles.status}>Starting camera…</span>}

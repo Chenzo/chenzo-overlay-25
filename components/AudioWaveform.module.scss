@@ -13,14 +13,14 @@
   }
 }
 
-// Shown at 40% of its natural size (869x423), centered on the bar, behind the canvas.
+// Shown at 30% of its natural size (869x423), centered on the bar, behind the canvas.
 .backdrop {
   position: absolute;
   top: 50%;
   left: 50%;
-  height: 169px;
+  height: 127px;
   transform: translate(-50%, -50%);
-  opacity: 0.15;
+  opacity: 0.1;
   pointer-events: none;
 }
 
