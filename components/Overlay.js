@@ -6,6 +6,7 @@ import { hasFullAccess } from '../config/authorizedUsers';
 
 import styles from './Overlay.module.scss';
 import AudioObject from './AudioObject';
+import VideoObject, { videoClips } from './VideoObject';
 import ChatRelay from './ChatRelay';
 import LoginButton from './LoginButton';
 import LogOutButton from './LogOutButton';
@@ -21,6 +22,7 @@ export default function Overlay({}) {
   const murrayURL = process.env.NEXT_PUBLIC_MURRAY_SERVER;
   const [alignment, setAlignment] = useState(50);
   const [currentAudio, setCurrentAudio] = useState('');
+  const [currentVideo, setCurrentVideo] = useState('');
   const [sunkShipArray, setSunkShipArray] = useState([]);
   const [pushedImage, setPushedImage] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -76,7 +78,14 @@ export default function Overlay({}) {
           setAlignment(parseInt(data.theTarget));
         } else if (data?.theEvent == 'playaudio') {
           console.log(`play audio: ${data.theTarget}`);
-          setCurrentAudio(data.theTarget);
+          if (data.theTarget === 'stop') {
+            setCurrentAudio('stop');
+            setCurrentVideo('stop');
+          } else if (videoClips.some((clip) => clip.id === data.theTarget)) {
+            setCurrentVideo(data.theTarget);
+          } else {
+            setCurrentAudio(data.theTarget);
+          }
         } else if (data?.theEvent == 'overlayToggle') {
           console.log(`data?.theEvent: ${data.theTarget}`);
           setOverlayToggle(data.theTarget); // Possible values: '', 'afk', 'whiskey', 'family', 'skullvatar'
@@ -458,6 +467,7 @@ export default function Overlay({}) {
       )}
       <AudioWaveform active={showWaveform} />
       <AudioObject currentAudio={currentAudio} setCurrentAudio={setCurrentAudio} />
+      <VideoObject currentVideo={currentVideo} setCurrentVideo={setCurrentVideo} />
       <ChatRelay setIsChatting={setIsChatting} onMessage={setChatMessage} />
       {activeTheme && (
         <>
