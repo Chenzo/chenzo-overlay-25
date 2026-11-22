@@ -1,0 +1,32 @@
+.videoObject {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1000;
+  width: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  // Keep in sync with FADE_OUT_MS in VideoObject.js.
+  &.fading {
+    opacity: 0;
+    transition: opacity 600ms ease-out;
+  }
+}
+
+.video {
+  display: none;
+  width: 100%;
+  height: auto;
+
+  &.activeVideo {
+    display: block;
+  }
+}

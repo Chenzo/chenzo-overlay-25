@@ -8,6 +8,14 @@ export default function SoundBoard() {
   const [murrayText, setMurrayText] = useState('');
   const soundsArray = [
     {
+      name: 'Videos',
+      sounds: [
+        { id: 'circlek', name: 'Circle K' },
+        { id: 'trap-video', name: "It's A Trap" },
+        { id: 'mostly', name: 'Mostly' },
+      ],
+    },
+    {
       name: 'New',
       sounds: [
         { id: 'pricefail', name: 'Price is Right Fail' },
